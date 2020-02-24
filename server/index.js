@@ -6,8 +6,9 @@ const app = express();
 mongoose.connect(process.env.DATABASE, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
     console.log(`DB conected to ${process.env.DATABASE}`)
 });
-const db = mongoose.connect;
-
+const db = mongoose.connection;
+db.on('error', (error) => { console.log('!!!!!! ', error) })
+db.once('open', () => { console.log('Connected to DB') })
 
 app.use(express.json());
 app.use('/user', require('./routes/user/user-rout'));

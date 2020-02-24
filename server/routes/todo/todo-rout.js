@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const TaskSchema = require('./todo-model')
 
 router.get('/', async(req, res) => {
     res.send(`GET to-do`);
