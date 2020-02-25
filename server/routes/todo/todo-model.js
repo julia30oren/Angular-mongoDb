@@ -10,7 +10,7 @@ const TaskSchema = new Schema({
         type: String,
         required: false
     },
-    id_done: {
+    done: {
         type: Boolean,
         required: true,
         default: false

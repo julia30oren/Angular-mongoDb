@@ -3,7 +3,6 @@ const router = express.Router();
 const UsersSchema = require('./user-model');
 
 router.get('/', async(req, res) => {
-    // res.send(`GET user`);
     try {
         const allUsers = await UsersSchema.find()
         res.send(allUsers)
@@ -13,10 +12,8 @@ router.get('/', async(req, res) => {
 });
 
 router.get('/:id', getUsersById, async(req, res) => {
-    // res.send(`GET by ID user`);
     try {
-        await res.thisUser.remove();
-        res.send(res.thisUser, ' - deleted')
+        res.send(res.thisUser)
     } catch (error) {
         res.status(400).json({ message: ` We have an error with users data : ${err.message}` })
     }
@@ -40,20 +37,32 @@ router.post('/new-user', async(req, res) => {
 });
 
 router.post('/user-login', async(req, res) => {
-    console.log(req.body);
-    res.send(`POST user login`);
+    // console.logs(req.body);
+    // res.send(`POST user login`);
+
+    const { email, password } = req.body;
+    try {
+        const login = await UsersSchema.find({ "email": email, "password": password });
+        res.json(login);
+    } catch (err) {
+        return res.status(500).send({ message: err.message })
+    }
 });
 
 router.delete('/delete-user', async(req, res) => {
-    console.log(req.body);
-    res.send(`DELETE user`);
+    const { email } = req.body;
+    try {
+        const deleteUser = await UsersSchema.remove({ "email": email });
+        res.json({ message: `user deleted` })
+    } catch (err) {
+        return res.status(500).send({ message: err.message })
+    }
 });
 
 router.delete('/delete-user/:id', getUsersById, async(req, res) => {
-    // console.log(req.body);
-    // res.send(`DELETE user`);
     try {
-        // res.send(res.thisUser)
+        await res.thisUser.remove();
+        res.send({ message: `user deleted ${res.thisUser.name}` })
     } catch (error) {
         res.status(400).json({ message: ` We have an error with users data : ${err.message}` })
     }
