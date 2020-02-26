@@ -1,36 +1,34 @@
+<!-- <p>{{data_db | json}}</p> -->
+
 <div class="table-group">
     <h2>Tasks</h2>
     <table class="table table-striped">
         <thead>
             <tr>
-                <th scope="col">#</th>
+                <th scope="col"># id</th>
                 <th scope="col">Text</th>
                 <th scope="col">User</th>
+                <th scope="col">Created</th>
                 <th scope="col">Done</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-            </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-            </tr>
-            <tr>
-                <th scope="row">3</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
+            <tr *ngFor="let task of data_db">
+                <th scope="row" (click)="moreDetail(task._id)">{{task._id}}</th>
+                <td>"{{task.text}}"</td>
+                <td>{{task.user_to_do}}</td>
+                <td>{{task.was_created}}</td>
+                <td>{{task.done}}</td>
+                <td><button *ngIf="task.done===false" (click)="done(task._id)">V</button></td>
+                <td><button (click)="delete(task._id)">X</button></td>
             </tr>
         </tbody>
     </table>
 </div>
+
+
 
 <style>
     .table-group {

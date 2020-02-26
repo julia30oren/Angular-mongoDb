@@ -1,14 +1,14 @@
+<p> {{res | json}} </p>
+
 <div class="input-form">
 
     <div class="input-group mb-3">
         <div class="input-group-prepend">
             <label class="input-group-text" for="_user_todo">Users</label>
         </div>
-        <select class="custom-select" id="_user_todo">
+        <select [(ngModel)]="new_task_user" class="custom-select" id="_user_todo">
           <option selected>Choose...</option>
-          <option value="1">One</option>
-          <option value="2">Two</option>
-          <option value="3">Three</option>
+          <option *ngFor="let user of users_db" value={{user._id}}>{{ user.name }}</option>
         </select>
     </div>
 
@@ -16,11 +16,11 @@
         <div class="input-group-prepend">
             <span class="input-group-text">Task to-do</span>
         </div>
-        <textarea class="form-control" aria-label="With textarea"></textarea>
+        <textarea [(ngModel)]="new_task_text" class="form-control" aria-label="With textarea"></textarea>
     </div>
 
     <div>
-        <button type="button" class="btn btn-light btn-block">Create Task</button>
+        <button (click)="createNewTask()" type="button" class="btn btn-light btn-block">Create Task</button>
     </div>
 
 </div>
