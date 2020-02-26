@@ -51,5 +51,10 @@ export class MainService {
     return res;
   }
 
+  logIn(user: object): Observable<User_Interface[]> {
+    const res = this.http.post<User_Interface[]>(`${this.Users_url}/user-login`, user);
+    return res;
+  }
+
 
 }

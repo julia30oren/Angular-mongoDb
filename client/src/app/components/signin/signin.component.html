@@ -4,20 +4,30 @@
         <div class="input-group-prepend">
             <span class="input-group-text" id="_email">Email</span>
         </div>
-        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="_email">
+        <input (keyup)="emptyEmail()" [(ngModel)]="email" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="_email">
+    </div>
+    <div *ngIf="!email_empty">
+        <p>not filed</p>
     </div>
 
     <div class="input-group mb-3">
         <div class="input-group-prepend">
             <span class="input-group-text" id="_password">Password</span>
         </div>
-        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="_password">
+        <input (keyup)="emptyPass()" [(ngModel)]="password" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="_password">
+    </div>
+    <div *ngIf="!password_empty">
+        <p>not filed</p>
     </div>
 
     <div>
-        <button type="button" class="btn btn-light btn-block">SignIn</button>
+        <button (click)="login()" type="button" class="btn btn-light btn-block">SignIn</button>
     </div>
 
+</div>
+
+<div>
+    <p>{{message}}</p>
 </div>
 
 <style>
