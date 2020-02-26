@@ -42,8 +42,13 @@ export class MainService {
   }
 
   Delete_Task(this_task: string): Observable<Task_Interface[]> {
-    console.log(this_task)
+    // console.log(this_task)
     return this.http.post<Task_Interface[]>(`${this.Tasks_url}/delete-task/${this_task}`, null)
+  }
+
+  createUser_DB(user: object): Observable<User_Interface[]> {
+    const res = this.http.post<User_Interface[]>(`${this.Users_url}/new-user`, user);
+    return res;
   }
 
 

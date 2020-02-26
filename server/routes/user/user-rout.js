@@ -49,24 +49,24 @@ router.post('/user-login', async(req, res) => {
     }
 });
 
-router.delete('/delete-user', async(req, res) => {
-    const { email } = req.body;
-    try {
-        const deleteUser = await UsersSchema.remove({ "email": email });
-        res.json({ message: `user deleted` })
-    } catch (err) {
-        return res.status(500).send({ message: err.message })
-    }
-});
+// router.post('/delete-user', async(req, res) => {
+//     const { email } = req.body;
+//     try {
+//         const deleteUser = await UsersSchema.remove({ "email": email });
+//         res.json({ message: `user deleted` })
+//     } catch (err) {
+//         return res.status(500).send({ message: err.message })
+//     }
+// });
 
-router.delete('/delete-user/:id', getUsersById, async(req, res) => {
-    try {
-        await res.thisUser.remove();
-        res.send({ message: `user deleted ${res.thisUser.name}` })
-    } catch (error) {
-        res.status(400).json({ message: ` We have an error with users data : ${err.message}` })
-    }
-});
+// router.post('/delete-user/:id', getUsersById, async(req, res) => {
+//     try {
+//         await res.thisUser.remove();
+//         res.send({ message: `user deleted ${res.thisUser.name}` })
+//     } catch (error) {
+//         res.status(400).json({ message: ` We have an error with users data : ${err.message}` })
+//     }
+// });
 
 
 async function getUsersById(req, res, next) {
