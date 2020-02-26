@@ -3,9 +3,10 @@ const router = express.Router();
 const TaskSchema = require('./todo-model')
 
 router.get('/', async(req, res) => {
+    // res.json({ message: ` We have no error on server` })
     try {
-        const allTasks = await TaskSchema.find()
-        res.send(allTasks)
+        const allTasks = await TaskSchema.find();
+        res.json(allTasks);
     } catch (err) {
         res.status(500).json({ message: ` We have an error on server : ${err.message}` })
     }
@@ -20,16 +21,14 @@ router.get('/:id', getTaskById, async(req, res) => {
 });
 
 router.post('/new-task', async(req, res) => {
-    // console.log(req.body);
 
     const newTask = new TaskSchema({
         text: req.body.text,
         user_to_do: req.body.user_to_do,
-        done: req.body.done
     });
-    // console.log(newUser)
+
     try {
-        const taskToSave = await newTask.save()
+        const taskToSave = await newTask.save();
         res.status(201).json(taskToSave);
     } catch (err) {
         res.status(400).json({ message: ` We have an error with users data : ${err.message}` })
@@ -39,22 +38,30 @@ router.post('/new-task', async(req, res) => {
 
 router.post('/task-done/:id', getTaskById, async(req, res) => {
     // res.send(`POST to-do done`);
+    console.log(res.thisTodo)
+
     try {
         await res.thisTodo.updateOne({ $set: { "done": true } });
-        res.send({ message: `"${res.thisTodo.text}" task is done ` })
+        res.json(res.thisTodo._id)
     } catch (error) {
         res.status(400).json({ message: ` We have an error with users data : ${err.message}` })
     }
 });
 
-router.delete('/delete-task/:id', getTaskById, async(req, res) => {
+router.post('/delete-task/:id', getTaskById, async(req, res) => {
+    // console.log(res.thisTodo)
+
     try {
         await res.thisTodo.remove();
-        res.send({ message: `"${res.thisTodo.text}" task was deleted` })
+        res.json({ message: `"${res.thisTodo.text}" task was deleted` })
     } catch (error) {
         res.status(400).json({ message: ` We have an error with users data : ${err.message}` })
     }
 })
+
+
+
+
 
 async function getTaskById(req, res, next) {
     let thisTodo;
@@ -69,5 +76,9 @@ async function getTaskById(req, res, next) {
     res.thisTodo = thisTodo;
     next();
 }
+
+
+
+
 
 module.exports = router;

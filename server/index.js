@@ -10,6 +10,8 @@ const db = mongoose.connection;
 db.on('error', (error) => { console.log('!!!!!! ', error) })
 db.once('open', () => { console.log('Connected to DB') })
 
+app.use(cors({ origin: 'http://localhost:4200' }));
+
 app.use(express.json());
 app.use('/user', require('./routes/user/user-rout'));
 app.use('/to-do-list', require('./routes/todo/todo-rout'));
