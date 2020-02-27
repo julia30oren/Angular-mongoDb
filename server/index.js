@@ -4,8 +4,8 @@ const mongoose = require('mongoose');
 const app = express();
 var cors = require('cors');
 
-mongoose.connect(process.env.DATABASE, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
-    console.log(`DB conected to ${process.env.DATABASE}`)
+mongoose.connect(process.env.DATABASE_DOCKER, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
+    console.log(`DB conected to ${process.env.DATABASE_DOCKER}`)
 });
 const db = mongoose.connection;
 db.on('error', (error) => { console.log('!!!!!! ', error) })
