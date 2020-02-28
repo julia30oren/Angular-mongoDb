@@ -1,0 +1,54 @@
+<!-- <p>{{data_db | json}}</p> -->
+
+<div class="input-group mb-3">
+    <div class="input-group-prepend">
+        <button (click)="serch_byNumber()" class="btn btn-outline-secondary" type="button" id="button-addon1">Search</button>
+    </div>
+    <input [(ngModel)]="search_" type="number" class="form-control" placeholder="Account number" aria-label="Example text with button addon" aria-describedby="button-addon1">
+</div>
+
+<div class="table-group">
+    <h2>Bank Accounts</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Account</th>
+                <th scope="col">Action type</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Created</th>
+                <th scope="col">Procent</th>
+                <th scope="col">Payments</th>
+                <th scope="col">Expiry date</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let account of data_db">
+                <th scope="row"> # {{account.acount_number}}</th>
+                <td>" {{account.action_tipe[0].tittle}} "</td>
+                <td>{{account.action_tipe[0].amount}} $</td>
+                <td>{{account.was_created | date}}</td>
+                <td *ngIf="account.action_tipe[0].procent">{{account.action_tipe[0].procent}} %</td>
+                <td *ngIf="account.action_tipe[0].paiements">{{account.action_tipe[0].paiements}} </td>
+                <td *ngIf="account.action_tipe[0].end_date">{{account.action_tipe[0].end_date | date}} </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
+<style>
+    .table-group,
+    .input-group {
+        width: 80%;
+        margin-top: 1%;
+        margin-left: 5%;
+        padding-top: 1%;
+        padding-left: 5%;
+    }
+    
+    h2 {
+        text-align: center;
+    }
+</style>

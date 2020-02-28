@@ -1,0 +1,70 @@
+<div class="input-form">
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="acount_number">Acount Number</span>
+        </div>
+        <input [(ngModel)]="acount_number" type="number" class="form-control" aria-label="Sizing example input" aria-describedby="acount_number">
+    </div>
+
+    <div *ngIf="acount_number" class="input-group mb-3">
+        <select [(ngModel)]="request_type" class="custom-select" id="request_type">
+          <option   selected>Choose...</option>
+          <option value="Withdraw">Withdraw</option>
+          <option value="Deposit">Deposit</option>
+          <option value="Loan">Loan</option>
+        </select>
+        <div class="input-group-append">
+            <label class="input-group-text" for="inputGroupSelect02">Request Type</label>
+        </div>
+    </div>
+
+    <div *ngIf="request_type" class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="amount">Amount</span>
+        </div>
+        <input [(ngModel)]="amount" type="number" class="form-control" aria-label="Sizing example input" aria-describedby="amount">
+    </div>
+
+    <div *ngIf="request_type === 'Loan'" class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="procent">Procent</span>
+        </div>
+        <input [(ngModel)]="procent" type="number" class="form-control" aria-label="Sizing example input" aria-describedby="acount_number">
+    </div>
+
+    <div *ngIf="procent" class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="paiements">Paiements</span>
+        </div>
+        <input [(ngModel)]="paiements" type="number" class="form-control" aria-label="Sizing example input" aria-describedby="paiements">
+    </div>
+
+    <div *ngIf="paiements" class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="end_date">Exp. Date</span>
+        </div>
+        <input [(ngModel)]="end_date" type="date" class="form-control" aria-label="Sizing example input" aria-describedby="end_date">
+    </div>
+
+
+    <div>
+        <button *ngIf="amount" (click)="seaveNewRequest()" type="button" class="btn btn-light btn-block">Send</button>
+    </div>
+
+</div>
+
+<style>
+    .input-form {
+        margin: 5%;
+        padding: 5%;
+    }
+    
+    .input-group-prepend {
+        width: 20%;
+    }
+    
+    .input-group-text {
+        width: 100%;
+    }
+</style>
