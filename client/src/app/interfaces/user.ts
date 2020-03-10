@@ -1,7 +1,12 @@
 export interface User_Interface {
-    id: string,
-    name: string,
+    first_name: string,
+    last_name: string,
+    id: number,
     email: string,
     password: string,
-    created: string
+    city: string,
+    street: string,
+    house: string,
+    apartments: string,
+    phone_num: number
 }

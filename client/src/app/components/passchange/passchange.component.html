@@ -1,0 +1,56 @@
+<div class="input-form">
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="_email">Email</span>
+        </div>
+        <input [(ngModel)]="email" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="_email">
+    </div>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="_password">Password</span>
+        </div>
+        <input [(ngModel)]="password" (keyup)="paswordCheck()" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="_password">
+    </div>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="_password_conf">Password conf.</span>
+        </div>
+        <input [(ngModel)]="conf_p" (keyup)="paswordCheck()" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="_password_conf">
+
+    </div>
+    <div *ngIf="!pas_ok">
+        <p>Psaaword do not metch</p>
+    </div>
+    <div>
+        <button type="button" class="btn btn-light btn-block">Save new Password</button>
+    </div>
+
+    <div>
+        <ul class="navbar-nav">
+
+            <li class="nav-item">
+                <a class="nav-link" href="/sign-in"> Back </a>
+            </li>
+
+        </ul>
+    </div>
+
+</div>
+
+<style>
+    .input-form {
+        margin: 5%;
+        padding: 5%;
+    }
+    
+    .input-group-prepend {
+        width: 20%;
+    }
+    
+    .input-group-text {
+        width: 100%;
+    }
+</style>

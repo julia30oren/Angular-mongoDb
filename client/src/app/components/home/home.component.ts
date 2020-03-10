@@ -10,6 +10,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class HomeComponent implements OnInit {
 
   public data_db: Array<any>;
+  public grouped_by: Array<any> = null;
 
   constructor(
     private main_service: MainService,
@@ -17,24 +18,42 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.main_service.getTasks_DB()
+    this.main_service.getProductes_fromDB()
       .subscribe(data => this.data_db = data);
   }
 
-  moreDetail(id: string) {
-    this.router.navigate(['/task', id]);
+  eddToCart(id: number) {
+    // console.log('click', id);
+    this.main_service.getProducte(id)
+      .subscribe(data => this.data_db = data);
   }
 
-  done(id: string) {
-    this.main_service.setTask_done(id)
-      .subscribe(data => console.log(data));
-    location.reload();
+  groupeBy(groupe: string) {
+    // console.log('groupe by', groupe);
+    if (groupe === 'All') {
+      this.grouped_by = null;
+    } else {
+      const result = this.data_db.filter(item => item.category === groupe)
+      this.grouped_by = result;
+    }
   }
 
-  delete(id: string) {
-    this.main_service.Delete_Task(id)
-      .subscribe(data => console.log(data));
-    location.reload();
-  }
+
+
+  // moreDetail(id: string) {
+  //   this.router.navigate(['/task', id]);
+  // }
+
+  // done(id: string) {
+  //   this.main_service.setTask_done(id)
+  //     .subscribe(data => console.log(data));
+  //   location.reload();
+  // }
+
+  // delete(id: string) {
+  //   this.main_service.Delete_Task(id)
+  //     .subscribe(data => console.log(data));
+  //   location.reload();
+  // }
 
 }

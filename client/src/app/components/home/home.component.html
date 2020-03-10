@@ -1,39 +1,90 @@
 <!-- <p>{{data_db | json}}</p> -->
+<!-- <p>{{grouped_by| json}}</p> -->
 
-<div class="table-group">
-    <h2>Tasks</h2>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col"># id</th>
-                <th scope="col">Text</th>
-                <th scope="col">User</th>
-                <th scope="col">Created</th>
-                <th scope="col">Done</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let task of data_db">
-                <th scope="row" (click)="moreDetail(task._id)">{{task._id}}</th>
-                <td>"{{task.text}}"</td>
-                <td>{{task.user_to_do}}</td>
-                <td>{{task.was_created}}</td>
-                <td>{{task.done}}</td>
-                <td><button *ngIf="task.done===false" (click)="done(task._id)">V</button></td>
-                <td><button (click)="delete(task._id)">X</button></td>
-            </tr>
-        </tbody>
-    </table>
+<h2>Productes:</h2>
+
+<ul class="nav justify-content-center">
+    <li class="nav-item">
+        <button id="first_link" class="nav-link" (click)="groupeBy('All')">All</button>
+    </li>
+    <li class="nav-item">
+        <button class="nav-link" (click)="groupeBy('Milk & Eggs')">Milk & Eggs</button>
+    </li>
+    <li class="nav-item">
+        <button class="nav-link" (click)="groupeBy('Fruit & Vegetables')">Fruit & Vegetables</button>
+    </li>
+    <li class="nav-item">
+        <button class="nav-link" (click)="groupeBy('Meat & Fish')">Meat & Fish</button>
+    </li>
+    <li class="nav-item">
+        <button class="nav-link" (click)="groupeBy('Drinks')">Drinks</button>
+    </li>
+</ul>
+
+<div class="cards-group" *ngIf="grouped_by === null">
+    <div class="card" *ngFor="let item of data_db">
+        <div class="">
+            <img src={{item.image}} class="card-img" alt="...">
+        </div>
+        <div class="">
+            <h5 class="card-title">{{item.name}}</h5>
+            <p class="card-text">{{item.price}} $</p>
+            <p class="card-text">{{item.category}}</p>
+        </div>
+        <button (click)="eddToCart(item._id)">+</button>
+    </div>
+</div>
+
+<div class="cards-group" *ngIf="grouped_by !== null">
+    <div class="card" *ngFor="let item of grouped_by" (click)="eddToCart(item._id)">
+        <div class="">
+            <img src={{item.image}} class="card-img" alt="...">
+        </div>
+        <div class="">
+            <h5 class="card-title">{{item.name}}</h5>
+            <p class="card-text">{{item.price}} $</p>
+            <p class="card-text">{{item.category}}</p>
+            <button (click)="eddToCart(item._id)">+</button>
+        </div>
+    </div>
 </div>
 
 
 
 <style>
-    .table-group {
-        margin: 5%;
-        padding: 5%;
+    h2 {
+        margin: 50px;
+    }
+    
+    button {
+        border: none;
+    }
+    
+    #first_link {
+        border-left: solid black 0.5px;
+    }
+    
+    .nav-link {
+        border-right: solid black 0.5px;
+    }
+    
+    .cards-group {
+        margin-left: 10%;
+        margin-right: 10%;
+        display: flex;
+        flex-wrap: wrap;
+    }
+    
+    .card {
+        width: 19%;
+        text-align: center;
+        margin: 0.5%;
+    }
+    
+    .card-img {
+        margin: 1%;
+        height: 200px;
+        width: 200px;
     }
     
     h2 {

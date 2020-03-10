@@ -15,7 +15,7 @@ app.use(cors({ origin: 'http://localhost:4200' }));
 
 app.use(express.json());
 app.use('/user', require('./routes/user/user-rout'));
-app.use('/to-do-list', require('./routes/todo/todo-rout'));
+app.use('/productes', require('./routes/products/products-rout'));
 
 app.listen(process.env.PORT, (res, err) => {
     if (err) {

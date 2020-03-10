@@ -21,19 +21,29 @@ router.get('/:id', getUsersById, async(req, res) => {
 
 router.post('/new-user', async(req, res) => {
     // console.log(req.body);
-    // res.send(`POST user`);
     const newUser = new UsersSchema({
-        name: req.body.name,
+        name: [{
+            first_name: req.body.first_name,
+            last_name: req.body.last_name,
+        }],
+        id: req.body.id,
         email: req.body.email,
-        password: req.body.password
+        password: req.body.password,
+        adress: [{
+            city: req.body.city,
+            street: req.body.street,
+            house: req.body.house,
+            apartments: req.body.apartments,
+            phone_num: req.body.phone_num
+        }]
     });
-    // console.log(newUser)
-    try {
-        const userToSave = await newUser.save()
-        res.status(201).json(userToSave);
-    } catch (err) {
-        res.status(400).json({ message: ` We have an error with users data : ${err.message}` })
-    }
+    console.log(newUser);
+    // try {
+    //     const userToSave = await newUser.save()
+    //     res.status(201).json(userToSave);
+    // } catch (err) {
+    //     res.status(400).json({ message: ` We have an error with users data : ${err.message}` })
+    // }
 });
 
 router.post('/user-login', async(req, res) => {

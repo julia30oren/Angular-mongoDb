@@ -1,39 +1,98 @@
 <div class="input-form">
-
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <span class="input-group-text" id="_name">Name</span>
+    <div *ngIf="!newUser">
+        <h2>Step 1</h2>
+        <div class="input-group  mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="first_name">First Name</span>
+            </div>
+            <input [(ngModel)]="first_name" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="first_name">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="last_name">Last Name</span>
+            </div>
+            <input [(ngModel)]="last_name" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="last_name">
         </div>
-        <input [(ngModel)]="name" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="_name">
-    </div>
 
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <span class="input-group-text" id="_email">Email</span>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="user_id">Id</span>
+            </div>
+            <input [(ngModel)]="user_id" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="user_id">
         </div>
-        <input [(ngModel)]="email" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="_email">
-    </div>
 
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <span class="input-group-text" id="_password">Password</span>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="_email">Email</span>
+            </div>
+            <input [(ngModel)]="email" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="_email">
         </div>
-        <input [(ngModel)]="password" (keyup)="paswordCheck()" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="_password">
-    </div>
 
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <span class="input-group-text" id="_password_conf">Password conf.</span>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="_password">Password</span>
+            </div>
+            <input [(ngModel)]="password" (keyup)="paswordCheck()" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="_password">
         </div>
-        <input [(ngModel)]="conf_p" (keyup)="paswordCheck()" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="_password_conf">
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="_password_conf">Password conf.</span>
+            </div>
+            <input [(ngModel)]="conf_p" (keyup)="paswordCheck()" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="_password_conf">
+
+        </div>
+        <div *ngIf="!pas_ok">
+            <p>Psaaword do not metch</p>
+        </div>
+    </div>
+
+    <div *ngIf="newUser">
+        <h2>Step 2</h2>
+        <div class="input-group  mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="_city">City</span>
+            </div>
+            <input [(ngModel)]="city" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="_city">
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="_street">Street</span>
+            </div>
+            <input [(ngModel)]="street" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="_street">
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="_house">House</span>
+            </div>
+            <input [(ngModel)]="house" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="_house">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="_apartments">Apartments</span>
+            </div>
+            <input [(ngModel)]="apartments" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="_apartments">
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="_phone_num">Phone Number</span>
+            </div>
+            <input [(ngModel)]="phone_num" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="_phone_num">
+        </div>
+
+        <div>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <button (click)="backToStep1()" id="back_b" class="btn btn-light">Back</button>
+                </li>
+            </ul>
+        </div>
 
     </div>
-    <div *ngIf="!pas_ok">
-        <p>Psaaword do not metch</p>
-    </div>
+
     <div>
         <button (click)="seaveNewUser()" type="button" class="btn btn-light btn-block">SignUp</button>
     </div>
+
 
 </div>
 
@@ -45,6 +104,11 @@
     
     .input-group-prepend {
         width: 20%;
+    }
+    
+    #back_b {
+        margin-top: 20px;
+        margin-bottom: 20px;
     }
     
     .input-group-text {
