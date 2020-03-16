@@ -3,9 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { SigninComponent } from './components/signin/signin.component';
 import { SignupComponent } from './components/signup/signup.component';
-import { CreateTaskComponent } from './components/create-task/create-task.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
-import { TaskComponent } from './components/task/task.component';
 import { PasschangeComponent } from './components/passchange/passchange.component';
 import { CartComponent } from './components/cart/cart.component';
 

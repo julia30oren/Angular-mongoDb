@@ -22,10 +22,7 @@ router.get('/:id', getUsersById, async(req, res) => {
 router.post('/new-user', async(req, res) => {
     // console.log(req.body);
     const newUser = new UsersSchema({
-        name: [{
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
-        }],
+        name: req.body.first_name + ' ' + req.body.last_name,
         id: req.body.id,
         email: req.body.email,
         password: req.body.password,
@@ -37,23 +34,30 @@ router.post('/new-user', async(req, res) => {
             phone_num: req.body.phone_num
         }]
     });
-    console.log(newUser);
-    // try {
-    //     const userToSave = await newUser.save()
-    //     res.status(201).json(userToSave);
-    // } catch (err) {
-    //     res.status(400).json({ message: ` We have an error with users data : ${err.message}` })
-    // }
+    // console.log(newUser);
+    try {
+        const userToSave = await newUser.save();
+        res.json(` User ${userToSave.name} signed up successfully.`);
+    } catch (err) {
+        res.status(400).json(` We have an error with users data.`)
+    }
 });
 
 router.post('/user-login', async(req, res) => {
-    // console.logs(req.body);
-    // res.send(`POST user login`);
-
     const { email, password } = req.body;
     try {
         const login = await UsersSchema.find({ "email": email, "password": password });
-        res.json(login);
+        res.json(login[0].name);
+    } catch (err) {
+        return res.status(500).send({ message: err.message })
+    }
+});
+
+router.post('/password-change', async(req, res) => {
+    const { email, oldPass, password } = req.body;
+    try {
+        const passChange = await UsersSchema.update({ "email": email, "password": oldPass }, { $set: { "password": password } });
+        if (passChange.nModified === 1) { res.json(`Password was changed successfully.`) } else { res.json(`Password wasn't changed.`) }
     } catch (err) {
         return res.status(500).send({ message: err.message })
     }

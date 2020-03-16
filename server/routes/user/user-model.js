@@ -1,16 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const FullName = new Schema({
-    first_name: {
-        type: String,
-        required: true
-    },
-    last_name: {
-        type: String,
-        required: true
-    }
-});
 
 const Adress = new Schema({
     country: {
@@ -40,7 +30,10 @@ const Adress = new Schema({
 });
 
 const UserSchema = new Schema({
-    name: [FullName],
+    name: {
+        type: String,
+        required: true
+    },
     id: {
         type: Number,
         unique: true

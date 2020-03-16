@@ -9,42 +9,65 @@
             <li class="nav-item active">
                 <a class="nav-link" href="/home"> Home <span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/sign-in"> SignIn </a>
-            </li>
+
             <!-- <li class="nav-item">
                 <a class="nav-link" href="/sign-up"> SignUp </a>
-            </li> -->
-            <!-- <li class="nav-item">
-                <a class="nav-link" href="/create-task"> Create Task </a>
             </li> -->
             <!-- <li class="nav-item">
         <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
       </li> -->
 
         </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-light my-2 my-sm-0" type="submit">Search</button>
+        </form>
     </div>
 
-    <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-light my-2 my-sm-0" type="submit">Search</button>
-    </form>
-    <span class="navbar-text">
-        user Julia Oren
-      </span>
-    <ul class="navbar-nav">
 
-        <li class="nav-item">
+
+    <ul class="navbar-nav">
+        <li class="nav-item" *ngIf="userName">
             <a class="nav-link" href="/my-cart"> My Cart </a>
+        </li>
+
+        <span class="navbar-text" *ngIf="userName">
+           <p id="user">User</p>{{userName}}
+          </span>
+        <li class="nav-item" *ngIf="!userName">
+            <a class="nav-link" href="/sign-in"> SignIn </a>
+        </li>
+
+        <li class="nav-item" *ngIf="userName">
+            <a class="nav-link" (click)="signOut()" href=""> SignOut </a>
         </li>
     </ul>
 </nav>
 
 <router-outlet></router-outlet>
 
+
 <style>
-    .navbar-text {
+    /* .navbar-text {
         padding-left: 5%;
         padding-right: 1%;
+    } */
+    
+    .form-inline {
+        margin-left: 10%;
+    }
+    
+    span {
+        text-align: justify;
+    }
+    
+    #user {
+        text-align: center;
+    }
+    
+    li {
+        margin-left: 20px;
+        margin-right: 20px;
+        text-align: center;
     }
 </style>

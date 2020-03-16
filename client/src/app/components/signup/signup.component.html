@@ -1,102 +1,127 @@
 <div class="input-form">
-    <div *ngIf="!newUser">
+
+    <div *ngIf="!next_step">
         <h2>Step 1</h2>
         <div class="input-group  mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="first_name">First Name</span>
+                <span class="input-group-text" id="first_name">First Name <p class="star">*</p></span>
             </div>
-            <input [(ngModel)]="first_name" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="first_name">
+            <input [(ngModel)]="first_name" type="text" [ngClass]="{'border-red':first_name === ''}" class="form-control" aria-label="Sizing example input" aria-describedby="first_name">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="last_name">Last Name</span>
+                <span class="input-group-text" id="last_name">Last Name <p class="star">*</p></span>
             </div>
-            <input [(ngModel)]="last_name" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="last_name">
+            <input [(ngModel)]="last_name" type="text" [ngClass]="{'border-red':last_name === ''}" class="form-control" aria-label="Sizing example input" aria-describedby="last_name">
         </div>
 
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="user_id">Id</span>
+                <span class="input-group-text" id="user_id">Id <p class="star">*</p></span>
             </div>
-            <input [(ngModel)]="user_id" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="user_id">
+            <input [(ngModel)]="user_id" [ngClass]="{'border-red':user_id === ''}" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="user_id">
         </div>
 
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="_email">Email</span>
+                <span class="input-group-text" id="_email">Email <p class="star">*</p></span>
             </div>
-            <input [(ngModel)]="email" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="_email">
+            <input [(ngModel)]="email" [ngClass]="{'border-red':email === ''}" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="_email">
         </div>
 
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="_password">Password</span>
+                <span class="input-group-text" id="_password">Password <p class="star">*</p></span>
             </div>
-            <input [(ngModel)]="password" (keyup)="paswordCheck()" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="_password">
+            <input [(ngModel)]="password" [ngClass]="{'border-red':password === ''}" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="_password">
         </div>
 
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="_password_conf">Password conf.</span>
+                <span class="input-group-text" id="_password_conf">Password conf. <p class="star">*</p></span>
             </div>
-            <input [(ngModel)]="conf_p" (keyup)="paswordCheck()" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="_password_conf">
+            <input [(ngModel)]="conf_p" [ngClass]="{'border-red':conf_p === '' || password !== conf_p}" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="_password_conf">
 
         </div>
-        <div *ngIf="!pas_ok">
-            <p>Psaaword do not metch</p>
-        </div>
+
     </div>
 
-    <div *ngIf="newUser">
+    <div *ngIf="next_step">
         <h2>Step 2</h2>
         <div class="input-group  mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="_city">City</span>
+                <span class="input-group-text" id="_city">City <p class="star">*</p></span>
             </div>
-            <input [(ngModel)]="city" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="_city">
+            <select class="custom-select" [(ngModel)]="city" [ngClass]="{'border-red':city === ''}" id="inputGroupSelect01" placeholder="Choose...">
+                <option value="Tel Aviv">Tel Aviv</option>
+                <option value="Ashdod">Ashdod</option>
+                <option value="Petah Toqwa">Petah Toqwa</option>
+                <option value="Holon">Holon</option>
+              </select>
         </div>
 
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="_street">Street</span>
+                <span class="input-group-text" id="_street">Street <p class="star">*</p></span>
             </div>
-            <input [(ngModel)]="street" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="_street">
+            <input [(ngModel)]="street" [ngClass]="{'border-red':street === ''}" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="_street">
         </div>
 
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="_house">House</span>
+                <span class="input-group-text" id="_house">House <p class="star">*</p></span>
             </div>
-            <input [(ngModel)]="house" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="_house">
+            <input [(ngModel)]="house" [ngClass]="{'border-red':house === ''}" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="_house">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="_apartments">Apartments</span>
+                <span class="input-group-text" id="_apartments">Apartments <p class="star">*</p></span>
             </div>
-            <input [(ngModel)]="apartments" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="_apartments">
+            <input [(ngModel)]="apartments" [ngClass]="{'border-red':apartments === ''}" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="_apartments">
         </div>
 
         <div class="input-group mb-3">
             <div class="input-group-prepend">
-                <span class="input-group-text" id="_phone_num">Phone Number</span>
+                <span class="input-group-text" id="_phone_num">Phone Number <p class="star">*</p></span>
             </div>
-            <input [(ngModel)]="phone_num" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="_phone_num">
-        </div>
-
-        <div>
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <button (click)="backToStep1()" id="back_b" class="btn btn-light">Back</button>
-                </li>
-            </ul>
+            <input [(ngModel)]="phone_num" [ngClass]="{'border-red':phone_num === ''}" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="_phone_num">
         </div>
 
     </div>
 
-    <div>
-        <button (click)="seaveNewUser()" type="button" class="btn btn-light btn-block">SignUp</button>
+
+    <div *ngIf="message" class="alert alert-danger" role="alert">
+        {{message}}
+    </div>
+
+    <div *ngIf="!next_step">
+        <button (click)="data1_check()" type="button" class="btn btn-light btn-block">Step 2</button>
+    </div>
+
+    <div *ngIf="next_step">
+        <p>
+            <button (click)="backToStep1()" id="back_b" class="btn btn-light btn-block">Back</button>
+            <button (click)="data2_check()" type="button" class="btn btn-light btn-block">SignUp</button>
+        </p>
     </div>
 
 
 </div>
 
 <style>
+    .star {
+        color: red;
+    }
+    
+    .border-red {
+        border: solid red 1px;
+    }
+    
+    input,
+    select {
+        height: 60px;
+    }
+    
+    button {
+        background-color: rgba(182, 193, 201, 0.582);
+    }
+    
     .input-form {
         margin: 5%;
         padding: 5%;

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MainService } from 'src/app/services/main.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signin',
@@ -12,41 +13,35 @@ export class SigninComponent implements OnInit {
   public email: string;
   public password: string;
   public user: object;
-  public email_empty: boolean = true;
-  public password_empty: boolean = true;
 
   constructor(
-    private main_service: MainService
+    private main_service: MainService,
+    private router: Router
   ) { }
 
   ngOnInit() {
   }
 
-  emptyEmail() {
-    if (!this.email) {
-      this.email_empty = false;
-    } else this.email_empty = true;
-  }
-
-  emptyPass() {
-    if (!this.password) {
-      this.password_empty = false;
-    } else this.password_empty = true;
+  data_check() {
+    if (this.email) {
+      if (this.password) {
+        this.login();
+      } else { this.message = 'Password not filed'; }
+    } else { this.message = 'Email not filed'; }
   }
 
   login() {
-    if (this.email && this.password) {
-      this.user = {
-        email: this.email,
-        password: this.password
-      }
-      this.main_service.logIn(this.user)
-        .subscribe(data => {
-          if (data[0]) {
-            this.message = 'ok'
-          } else this.message = 'not ok'
-        })
+    this.user = {
+      email: this.email,
+      password: this.password
     }
+    // console.log(this.user)
+    this.main_service.logIn(this.user)
+      .subscribe(data => {
+        // console.log(data);
+        localStorage.setItem('user', JSON.stringify(data));
+        this.router.navigate(['/home']);
+      })
   }
 
 }

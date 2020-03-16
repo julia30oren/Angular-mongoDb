@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MainService } from './services/main.service';
 
 @Component({
@@ -7,6 +7,22 @@ import { MainService } from './services/main.service';
   styleUrls: ['./app.component.css'],
   providers: [MainService]
 })
-export class AppComponent {
-  title = 'client';
+export class AppComponent implements OnInit {
+
+  public userName: string;
+
+  constructor(
+    private main_service: MainService
+  ) { }
+
+  ngOnInit() {
+    setInterval(() => {
+      this.userName = JSON.parse(localStorage.getItem('user'));
+    }, 1000)
+  }
+
+  signOut() {
+    localStorage.removeItem('user');
+    window.location.reload();
+  }
 }
