@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-
 const Adress = new Schema({
     country: {
         type: String,
@@ -47,7 +46,8 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
-    adress: [Adress]
+    adress: [Adress],
+    whish_list: []
 });
 
 module.exports = mongoose.model('users', UserSchema);
