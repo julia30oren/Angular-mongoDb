@@ -21,11 +21,6 @@ export class MainService {
     return getProductes_result;
   }
 
-  getProducte(this_id): Observable<Product_Interface[]> {
-    const item_result = this.http.get<Product_Interface[]>(`${this.Productes_url}/${this_id}`);
-    return item_result;
-  }
-
   createUser_DB(user: object): Observable<User_Interface[]> {
     const res = this.http.post<User_Interface[]>(`${this.Users_url}/new-user`, user);
     return res;
@@ -46,4 +41,12 @@ export class MainService {
     const change_res = this.http.post<User_Interface[]>(`${this.Users_url}/password-change`, newPAss);
     return change_res;
   }
+
+  saveProducte(item_id: number, user_id: number): Observable<Product_Interface[]> {
+    const toCart = { "user_id": user_id, "item_id": item_id };
+    const item_result = this.http.post<Product_Interface[]>(`${this.Users_url}/cart-add`, toCart);
+    return item_result;
+  }
+
+
 }

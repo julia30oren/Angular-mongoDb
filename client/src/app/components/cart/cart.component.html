@@ -1,1 +1,34 @@
-<p>cart works!</p>
+<h3>My Cart</h3>
+
+<div>
+
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Product Name</th>
+                <th scope="col">Picter</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Price</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let item of my_cart">
+                <th scope="row">{{item.item_id}}</th>
+                <td><img src="" alt="..."></td>
+                <td><button>-</button> {{item.item_id}} <button>+</button></td>
+                <td>Otto</td>
+                <th><button>X</button></th>
+            </tr>
+        </tbody>
+    </table>
+    {{my_cart || json}}
+</div>
+<style>
+    div {
+        width: 50%;
+        margin-left: 25%;
+    }
+</style>

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const UsersSchema = require('./user-model');
-// const ItemSchema = require('./item-model');
+const ProductSchema = require('../products/products-model');
 
 router.get('/', async(req, res) => {
     try {
@@ -48,7 +48,8 @@ router.post('/user-login', async(req, res) => {
     const { email, password } = req.body;
     try {
         const login = await UsersSchema.find({ "email": email, "password": password });
-        res.json(login[0].name, login[0]._id, login[0].whish_list);
+        console.log({ name: login[0].name, _id: login[0]._id, whish_list: login[0].whish_list });
+        res.json({ name: login[0].name, _id: login[0]._id, whish_list: login[0].whish_list });
     } catch (err) {
         return res.status(500).send({ message: err.message })
     }
@@ -66,22 +67,34 @@ router.post('/password-change', async(req, res) => {
 
 ///add to cart +1 or new
 router.post('/cart-add', async(req, res) => {
-
-    const newItem = {
-        item_id: req.body.item_id,
-        amount: req.body.amount || 1
-    };
+    const user_id = req.body.user_id;
+    const item_id = req.body.item_id;
     try {
-        const searchItem = await UsersSchema.find({ "_id": user_id, "whish_list.item_id": item_id });
-        if (searchItem[0]) {
-            const thisAmount = searchItem[0].whish_list.filter(item => item.item_id === item_id)
-            const newAmount = thisAmount[0].amount + 1;
-            const addItem_toCart = await UsersSchema.update({ "_id": user_id, "whish_list.item_id": item_id }, { $set: { "whish_list.$.amount": newAmount } });
-            res.json(`Item ${item_id} was addet to cart successfully. +1`)
-        } else {
-            const addItem_toCart = await UsersSchema.update({ "_id": user_id }, { $push: { "whish_list": newItem } });
-            res.json(`Item ${item_id} was addet to cart successfully.`)
-        }
+        console.log(user_id, item_id);
+        const search_atUserList = await UsersSchema.findOne({ "_id": req.body.user_id });
+        console.log(search_atUserList);
+        res.json(search_atUserList)
+            // if (searchItem_atUserList[0]) {
+            //     const thisAmount = searchItem_atUserList[0].whish_list.filter(item => item.item_id === item_id)
+            //     const newAmount = thisAmount[0].amount + 1;
+            //     const addItem_toCart = await UsersSchema.update({ "_id": user_id, "whish_list.item_id": item_id }, { $set: { "whish_list.$.amount": newAmount } });
+            //     // res.json({ message: `Item ${item_id} was addet to cart successfully. +1`, item: item_id, amount: newAmount })
+            //     res.json(`Item was addet to cart successfully.1`)
+            // } else {
+            //     const searchItem = await ProductSchema.findById(item_id);
+            //     const newItem = {
+            //         item_id: searchItem._id,
+            //         image: searchItem.image,
+            //         name: searchItem.name,
+            //         category: searchItem.category,
+            //         price: searchItem.price,
+            //         amount: 1
+            //     };
+            //     console.log(newItem)
+            //     const addItem_toCart = await UsersSchema.updateOne({ "_id": user_id }, { $push: { "whish_list": newItem } });
+            //     res.json(`Item was addet to cart successfully.2`);
+            //     // res.json(newItem)
+            // }
     } catch (err) {
         return res.status(500).send({ message: err.message })
     }
