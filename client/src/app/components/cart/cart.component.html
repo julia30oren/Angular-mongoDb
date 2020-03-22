@@ -8,27 +8,37 @@
             <tr>
                 <th scope="col">Product Name</th>
                 <th scope="col">Picter</th>
-                <th scope="col">Quantity</th>
-                <th scope="col">Price</th>
+                <th class="price-text" scope="col">Price</th>
+                <th class="price-text" scope="col">Quantity</th>
+                <th class="price-text" scope="col">Total Price</th>
                 <th></th>
             </tr>
         </thead>
 
         <tbody>
             <tr *ngFor="let item of my_cart">
-                <th scope="row">{{item.item_id}}</th>
-                <td><img src="" alt="..."></td>
-                <td><button>-</button> {{item.item_id}} <button>+</button></td>
-                <td>Otto</td>
-                <th><button>X</button></th>
+                <th scope="row">{{item.name}}</th>
+                <td><img src="{{item.image}}" alt="..."></td>
+                <td class="price-text">{{item.price}} $</td>
+                <td class="price-text"><button (click)="less(item.item_id, item.amount)">-</button> {{item.amount}} <button (click)="more(item.item_id, item.amount)">+</button></td>
+                <td class="price-text">{{(item.amount * item.price).toFixed(2)}} $</td>
+                <th><button (click)="delete(item.item_id)">X</button></th>
             </tr>
         </tbody>
     </table>
-    {{my_cart || json}}
 </div>
 <style>
     div {
         width: 50%;
         margin-left: 25%;
+    }
+    
+    img {
+        height: 50px;
+        width: 50px;
+    }
+    
+    .price-text {
+        text-align: center;
     }
 </style>

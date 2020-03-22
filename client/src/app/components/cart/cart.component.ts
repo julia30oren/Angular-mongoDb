@@ -15,4 +15,39 @@ export class CartComponent implements OnInit {
     console.log(this.my_cart)
   }
 
+  more(product: number, amount: number) {
+    this.my_cart.forEach(element => {
+      if (element.item_id === product) {
+        element.amount = amount + 1
+        console.log(element.amount)
+      }
+    });
+  }
+
+  less(product: number, amount: number) {
+    this.my_cart.forEach(element => {
+      if (element.item_id === product && element.amount > 1) {
+        element.amount = amount - 1
+        console.log(element.amount)
+      }
+      else if (element.item_id === product && element.amount <= 1) {
+        for (var i = 0; i < this.my_cart.length; i++) {
+          if (this.my_cart[i].item_id === product) {
+            console.log(this.my_cart[i]);
+            this.my_cart.splice(i, 1);
+          }
+        }
+      }
+    });
+  }
+
+  delete(product: number) {
+    // console.log(product);
+    for (var i = 0; i < this.my_cart.length; i++) {
+      if (this.my_cart[i].item_id === product) {
+        console.log(this.my_cart[i]);
+        this.my_cart.splice(i, 1);
+      }
+    }
+  }
 }

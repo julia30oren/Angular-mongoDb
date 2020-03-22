@@ -1,32 +1,13 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const Adress = new Schema({
-    country: {
-        type: String,
-        default: 'Israel'
-    },
-    city: {
-        type: String,
-        required: true
-    },
-    street: {
-        type: String,
-        required: true
-    },
-    house: {
-        type: String,
-        required: true
-    },
-    apartments: {
-        type: String,
-        required: true
-    },
-    phone_num: {
-        type: Number,
-        required: true
-    }
-});
+// const Adress = new Schema({
+
+// });
+
+// const List = new Schema({
+
+// })
 
 const UserSchema = new Schema({
     name: {
@@ -35,7 +16,7 @@ const UserSchema = new Schema({
     },
     id: {
         type: Number,
-        unique: true
+        // unique: true
     },
     email: {
         type: String,
@@ -46,8 +27,53 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
-    adress: [Adress],
-    whish_list: []
+    adress: [{
+        country: {
+            type: String,
+            default: 'Israel'
+        },
+        city: {
+            type: String,
+            required: true
+        },
+        street: {
+            type: String,
+            required: true
+        },
+        house: {
+            type: String,
+            required: true
+        },
+        apartments: {
+            type: String,
+            required: true
+        },
+        phone_num: {
+            type: Number,
+            required: true
+        }
+    }],
+    whish_list: [{
+        item_id: {
+            type: String
+        },
+        image: {
+            type: String
+        },
+        name: {
+            type: String
+        },
+        category: {
+            type: String
+        },
+        price: {
+            type: Number
+        },
+        amount: {
+            type: Number,
+            default: 1
+        }
+    }]
 });
 
 module.exports = mongoose.model('users', UserSchema);
