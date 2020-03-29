@@ -65,9 +65,6 @@ export class AppComponent implements OnInit {
     // console.log(this.total_price)
   }
 
-
-  ///COCONAT MILK!
-
   openCart() {
     this.open_cart = !this.open_cart
   }
