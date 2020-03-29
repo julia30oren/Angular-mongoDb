@@ -19,8 +19,7 @@
 
         </ul>
         <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-light my-2 my-sm-0" type="submit">Search</button>
+            <input id="search-move" class="form-control mr-sm-2" type="search" placeholder="Search.." aria-label="Search">
         </form>
     </div>
 
@@ -33,14 +32,14 @@
         </li>
 
         <span class="navbar-text" *ngIf="userName">
-           <p id="user">User</p>{{userName}}
+           <p id="user">User <b>{{userName}}</b></p>
           </span>
         <li class="nav-item" *ngIf="!userName">
             <a class="nav-link" href="/sign-in"> SignIn </a>
         </li>
 
         <li class="nav-item" *ngIf="userName">
-            <a class="nav-link" (click)="signOut()" href=""> SignOut </a>
+            <button (click)="signOut()" class="nav-link"> SignOut </button>
         </li>
     </ul>
 </nav>
@@ -65,12 +64,17 @@
                 <td class="price-text">{{item.price}} $</td>
                 <td class="price-text"><button (click)="less(item.item_id, item.amount)">-</button> {{item.amount}} <button (click)="more(item.item_id, item.amount)">+</button></td>
                 <td class="price-text">{{(item.amount * item.price).toFixed(2)}} $</td>
-                <th><button (click)="delete(item.item_id)">X</button></th>
+                <th><button class="nav-link" (click)="delete(item.item_id)">X</button></th>
             </tr>
         </tbody>
     </table>
 
-    <div id="finale-price" *ngIf="total_price">Total <b>{{total_price.toFixed(2)}}</b> $$$</div>
+    <div id="finale-price" *ngIf="total_price">
+        <div>
+            <p>Total <b>{{total_price.toFixed(2)}}</b> $$$ </p>
+            <button class="nav-link">Order</button>
+        </div>
+    </div>
 </div>
 
 
@@ -95,8 +99,8 @@
     }
     
     #finale-price {
-        margin-right: 15%;
-        text-align: right;
+        position: absolute;
+        right: 5%;
     }
     /* .navbar-text {
         padding-left: 5%;
@@ -115,6 +119,7 @@
     }
     
     #user {
+        width: 200px;
         text-align: center;
     }
     
