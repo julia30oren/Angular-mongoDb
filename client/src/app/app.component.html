@@ -28,7 +28,8 @@
 
     <ul class="navbar-nav">
         <li class="nav-item" *ngIf="userName">
-            <a class="nav-link" href="/my-cart"> My Cart </a>
+            <button (click)="openCart()" class="nav-link"> My Cart </button>
+            <!-- <a class="nav-link" href="/my-cart"> My Cart </a> -->
         </li>
 
         <span class="navbar-text" *ngIf="userName">
@@ -44,13 +45,65 @@
     </ul>
 </nav>
 
+<div [ngClass]="{open: open_cart, close: !open_cart}">
+    <table class="table table-hover" *ngIf="open_cart">
+        <thead>
+            <tr>
+                <th scope="col">Product Name</th>
+                <th scope="col">Picter</th>
+                <th class="price-text" scope="col">Price</th>
+                <th class="price-text" scope="col">Quantity</th>
+                <th class="price-text" scope="col">Total Price</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let item of my_cart">
+                <th scope="row">{{item.name}}</th>
+                <td><img class="cart-img" src="{{item.image}}" alt="..."></td>
+                <td class="price-text">{{item.price}} $</td>
+                <td class="price-text"><button (click)="less(item.item_id, item.amount)">-</button> {{item.amount}} <button (click)="more(item.item_id, item.amount)">+</button></td>
+                <td class="price-text">{{(item.amount * item.price).toFixed(2)}} $</td>
+                <th><button (click)="delete(item.item_id)">X</button></th>
+            </tr>
+        </tbody>
+    </table>
+
+    <div id="finale-price" *ngIf="total_price">Total <b>{{total_price.toFixed(2)}}</b> $$$</div>
+</div>
+
+
 <router-outlet></router-outlet>
 
 
 <style>
+    .open {
+        width: 40%;
+        transition: width 1.5s;
+        height: 100%;
+        position: fixed;
+        right: 0;
+        padding: 1%;
+        z-index: 999;
+        background-color: aqua;
+        overflow: scroll;
+    }
+    
+    .close {
+        width: 0%;
+    }
+    
+    #finale-price {
+        margin-right: 15%;
+        text-align: right;
+    }
     /* .navbar-text {
         padding-left: 5%;
         padding-right: 1%;
+    } */
+    /* .navbar {
+        position: fixed;
     } */
     
     .form-inline {
@@ -68,6 +121,25 @@
     li {
         margin-left: 20px;
         margin-right: 20px;
+        text-align: center;
+    }
+    
+    #cart {
+        height: 100%;
+        position: fixed;
+        right: 0;
+        width: 40%;
+        padding: 1%;
+        z-index: 999;
+        background-color: aqua;
+    }
+    
+    .cart-img {
+        height: 50px;
+        width: 50px;
+    }
+    
+    .price-text {
         text-align: center;
     }
 </style>

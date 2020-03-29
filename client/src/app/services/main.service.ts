@@ -31,6 +31,11 @@ export class MainService {
     return getUsers_result;
   }
 
+  getUser_cart(id: number): Observable<User_Interface[]> {
+    const getUsers_result = this.http.get<User_Interface[]>(`${this.Users_url}/${id}`);
+    return getUsers_result;
+  }
+
   logIn(user: object): Observable<User_Interface[]> {
     const res = this.http.post<User_Interface[]>(`${this.Users_url}/user-login`, user);
     return res;
@@ -48,5 +53,10 @@ export class MainService {
     return item_result;
   }
 
+  deleteProducte(item_id: number, user_id: number): Observable<Product_Interface[]> {
+    const deleteFromCart = { "user_id": user_id, "item_id": item_id };
+    const item_result = this.http.post<Product_Interface[]>(`${this.Users_url}/cart-remove`, deleteFromCart);
+    return item_result;
+  }
 
 }

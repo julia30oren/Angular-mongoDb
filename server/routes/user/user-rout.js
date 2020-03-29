@@ -16,7 +16,7 @@ router.get('/', async(req, res) => {
 
 router.get('/:id', getUsersById, async(req, res) => {
     try {
-        res.send(res.thisUser)
+        res.send({ name: res.thisUser.name, _id: res.thisUser._id, whish_list: res.thisUser.whish_list })
     } catch (error) {
         res.status(400).json({ message: ` We have an error with users data : ${err.message}` })
     }
@@ -68,53 +68,59 @@ router.post('/password-change', async(req, res) => {
 });
 
 ///add to cart +1 or new
-///need to be fixed!!!
 router.post('/cart-add', async(req, res) => {
-    const user_id = req.body.user_id;
-    const item_id = req.body.item_id;
+    const { user_id, item_id } = req.body;
     try {
-        // console.log(user_id, item_id);
-        // const searchItem = await UsersSchema.find({ "_id": user_id });
-        // console.log(searchItem);
-        // res.json(searchItem)
-        // if (searchItem_atUserList[0]) {
-        //     const thisAmount = searchItem_atUserList[0].whish_list.filter(item => item.item_id === item_id)
-        //     const newAmount = thisAmount[0].amount + 1;
-        //     const addItem_toCart = await UsersSchema.update({ "_id": user_id, "whish_list.item_id": item_id }, { $set: { "whish_list.$.amount": newAmount } });
-        //     // res.json({ message: `Item ${item_id} was addet to cart successfully. +1`, item: item_id, amount: newAmount })
-        //     res.json(`Item was addet to cart successfully.1`)
-        // } else {
-        const searchItem = await ProductSchema.findById(item_id);
-        const newItem = {
-            item_id: searchItem._id,
-            image: searchItem.image,
-            name: searchItem.name,
-            category: searchItem.category,
-            price: searchItem.price,
-            amount: 1
-        };
-        console.log(newItem)
-        const addItem_toCart = await UsersSchema.updateOne({ "_id": user_id }, { $push: { "whish_list": newItem } });
-        res.json(`Item was addet to cart successfully.2`);
-        // }
+        const searchItem_inUser = await UsersSchema.find({ "_id": user_id, "whish_list.item_id": item_id });
+        if (searchItem_inUser[0]) {
+            const thisProduct = searchItem_inUser[0].whish_list.filter(item => item.item_id === item_id);
+            const newAmount = thisProduct[0].amount + 1;
+            const addItem_toCart = await UsersSchema.update({ "_id": user_id, "whish_list.item_id": item_id }, { $set: { "whish_list.$.amount": newAmount } });
+            console.log(addItem_toCart);
+            res.json(`Item was addet to cart successfully. ${thisProduct[0].name} total amount: ${newAmount}`)
+        } else {
+            const searchItem = await ProductSchema.findById(item_id);
+            const newItem = {
+                item_id: searchItem._id,
+                image: searchItem.image,
+                name: searchItem.name,
+                category: searchItem.category,
+                price: searchItem.price,
+                amount: 1
+            };
+            console.log(newItem)
+            const addItem_toCart = await UsersSchema.updateOne({ "_id": user_id }, { $push: { "whish_list": newItem } });
+            res.json(`Item was addet to cart successfully.`);
+        }
     } catch (err) {
         return res.status(500).send({ message: err.message })
     }
 });
+
+// router.post('/cart-add2', async(req, res) => {
+//     console.log(req.body)
+//     const searchItem = await UsersSchema.find({ "_id": req.body.user_id, "whish_list.item_id": req.body.item_id });
+//     console.log(searchItem, 'end');
+//     res.json(searchItem)
+// })
 
 //remove one -1 or item
 router.post('/cart-remove', async(req, res) => {
     const { user_id, item_id, amount } = req.body;
     try {
         const searchItem = await UsersSchema.find({ "_id": user_id, "whish_list.item_id": item_id });
-        const thisItem = searchItem[0].whish_list.filter(item => item.item_id === item_id);
-        if (thisItem[0].amount > 1) {
-            const newAmount = thisItem[0].amount - 1;
-            const removeItem_fromCart = await UsersSchema.update({ "_id": user_id, "whish_list.item_id": item_id }, { $set: { "whish_list.$.amount": newAmount } });
-            res.json(`Item ${item_id} was removed from cart successfully. -1`);
+        if (searchItem[0]) {
+            const thisItem = searchItem[0].whish_list.filter(item => item.item_id === item_id);
+            if (thisItem[0].amount > 1) {
+                const newAmount = thisItem[0].amount - 1;
+                const removeItem_fromCart = await UsersSchema.update({ "_id": user_id, "whish_list.item_id": item_id }, { $set: { "whish_list.$.amount": newAmount } });
+                res.json(`1 ${thisItem[0].name} was removed from cart successfully. Now ${newAmount}`);
+            } else {
+                const remove1Item_fromCart = await UsersSchema.update({ "_id": user_id }, { $pull: { "whish_list": { "item_id": item_id } } });
+                res.json(`Item ${thisItem[0].name} was removed from cart successfully.`)
+            }
         } else {
-            const remove1Item_fromCart = await UsersSchema.update({ "_id": user_id }, { $pull: { "whish_list": { "item_id": item_id } } });
-            res.json(`Item ${item_id} was removed from cart successfully.`)
+            return res.status(500).send('no such product')
         }
     } catch (err) {
         return res.status(500).send({ message: err.message })
