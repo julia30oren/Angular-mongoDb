@@ -29,5 +29,9 @@ export class HomeComponent implements OnInit {
     this.user_data_db = null;
     localStorage.clear();
   }
-
+  // signOut() {
+  //   // this.data_service.deleteUser();
+  //   localStorage.removeItem('user');
+  //   window.location.reload();
+  // }
 }

@@ -1,57 +1,173 @@
 <!-- <p>{{data_db | json}}</p> -->
 <!-- <p>{{grouped_by| json}}</p> -->
 
-<h2>Productes:</h2>
-
-<ul class="nav justify-content-center">
-    <li class="nav-item">
-        <button id="first_link" class="nav-link" (click)="groupeBy('All')">All</button>
-    </li>
-    <li class="nav-item">
-        <button class="nav-link" (click)="groupeBy('Milk & Eggs')">Milk & Eggs</button>
-    </li>
-    <li class="nav-item">
-        <button class="nav-link" (click)="groupeBy('Fruit & Vegetables')">Fruit & Vegetables</button>
-    </li>
-    <li class="nav-item">
-        <button class="nav-link" (click)="groupeBy('Meat & Fish')">Meat & Fish</button>
-    </li>
-    <li class="nav-item">
-        <button class="nav-link" (click)="groupeBy('Drinks')">Drinks</button>
-    </li>
-</ul>
-
-<div class="cards-group" *ngIf="grouped_by === null">
-    <div class="card" *ngFor="let item of data_db">
-        <div class="">
-            <img src={{item.image}} class="card-img" alt="...">
+<div id="main">
+    <div id="content" [ngClass]="{xz: !open_cart, xz2: open_cart}">
+        <div>
+            <button *ngIf="!open_cart" class="nav-link" id="search-button">Search</button>
         </div>
-        <div class="">
-            <h5 class="card-title">{{item.name}}</h5>
-            <p class="card-text">{{item.price}} $</p>
-            <p class="card-text">{{item.category}}</p>
+        <ul class="nav justify-content-center">
+            <li class="nav-item">
+                <button id="first_link" class="nav-link" (click)="groupeBy('All')">All</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" (click)="groupeBy('Milk & Eggs')">Milk & Eggs</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" (click)="groupeBy('Fruit & Vegetables')">Fruit & Vegetables</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" (click)="groupeBy('Meat & Fish')">Meat & Fish</button>
+            </li>
+            <li class="nav-item">
+                <button class="nav-link" (click)="groupeBy('Drinks')">Drinks</button>
+            </li>
+        </ul>
+
+        <div class="cards-group" *ngIf="grouped_by === null">
+            <div class="card" *ngFor="let item of data_db" [ngClass]="{lessCards: open_cart}">
+                <div class="">
+                    <img src={{item.image}} class="card-img" alt="...">
+                </div>
+                <div class="">
+                    <h5 class="card-title">{{item.name}}</h5>
+                    <p class="card-text">{{item.price}} $</p>
+                    <p class="card-text">{{item.category}}</p>
+                </div>
+                <button (click)="addToCart(item._id)">Add to Cart</button>
+            </div>
         </div>
-        <button (click)="addToCart(item._id)">+</button>
+
+        <div class="cards-group" *ngIf="grouped_by !== null">
+            <div class="card" *ngFor="let item of grouped_by" (click)="eddToCart(item._id)" [ngClass]="{lessCards: open_cart}">
+                <div class="">
+                    <img src={{item.image}} class="card-img" alt="...">
+                </div>
+                <div class="">
+                    <h5 class="card-title">{{item.name}}</h5>
+                    <p class="card-text">{{item.price}} $</p>
+                    <p class="card-text">{{item.category}}</p>
+                    <button (click)="addToCart(item._id)">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <button *ngIf="!open_cart" class="nav-link" (click)="open_cart = !open_cart">My Cart</button>
+        <button *ngIf="open_cart" class="nav-link" (click)="open_cart = !open_cart">=></button>
     </div>
 </div>
 
-<div class="cards-group" *ngIf="grouped_by !== null">
-    <div class="card" *ngFor="let item of grouped_by" (click)="eddToCart(item._id)">
-        <div class="">
-            <img src={{item.image}} class="card-img" alt="...">
+<div [ngClass]="{open: open_cart, close: !open_cart}">
+    <table class="table table-hover" *ngIf="open_cart">
+        <thead>
+            <tr>
+                <th scope="col">Product Name</th>
+                <th scope="col">Picter</th>
+                <th class="price-text" scope="col">Price</th>
+                <th class="price-text" scope="col">Quantity</th>
+                <th class="price-text" scope="col">Total Price</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let item of my_cart">
+                <th scope="row">{{item.name}}</th>
+                <td><img class="cart-img" src="{{item.image}}" alt="..."></td>
+                <td class="price-text">{{item.price}} $</td>
+                <td class="price-text"><button (click)="less(item.item_id, item.amount)">-</button> {{item.amount}} <button (click)="more(item.item_id, item.amount)">+</button></td>
+                <td class="price-text">{{(item.amount * item.price).toFixed(2)}} $</td>
+                <th><button class="nav-link" (click)="delete(item.item_id)">X</button></th>
+            </tr>
+        </tbody>
+    </table>
+
+    <div id="finale-price" *ngIf="total_price">
+        <div class="user-inf">
+            <h4>Total <b>{{total_price.toFixed(2)}}</b> $ </h4>
         </div>
-        <div class="">
-            <h5 class="card-title">{{item.name}}</h5>
-            <p class="card-text">{{item.price}} $</p>
-            <p class="card-text">{{item.category}}</p>
-            <button (click)="addToCart(item._id)">+</button>
+        <div class="user-inf">
+            <button id="order-button"> Order </button>
         </div>
     </div>
 </div>
-
 
 
 <style>
+    /* cart */
+    
+    #search-button {
+        border-left: solid black 1px;
+        border-right: none;
+        margin-left: 45px;
+        position: absolute;
+    }
+    
+    .user-inf {
+        width: 50%;
+    }
+    
+    #order-button {
+        border: solid black 1px;
+    }
+    
+    .open {
+        width: 40%;
+        transition: width 1.5s;
+        height: 800px;
+        position: fixed;
+        right: 15%;
+        top: 280px;
+        padding: 1%;
+        z-index: 999;
+        border-left: black solid 1px;
+        overflow-y: scroll;
+        overflow-x: hidden;
+    }
+    
+    .close {
+        width: 0%;
+    }
+    
+    #cart {
+        height: 100%;
+        position: fixed;
+        right: 0;
+        width: 40%;
+        padding: 1%;
+        z-index: 999;
+        border: black solid 1px;
+    }
+    
+    .cart-img {
+        height: 50px;
+        width: 50px;
+    }
+    
+    .price-text {
+        text-align: center;
+    }
+    /*     
+    #finale-price {
+        display: flex;
+        width: 50%;
+        margin-left: 50%;
+    } */
+    
+    #main {
+        display: flex;
+    }
+    
+    .xz {
+        width: 92%;
+    }
+    
+    .xz2 {
+        width: 39%;
+    }
+    
     h2 {
         margin: 50px;
     }
@@ -79,6 +195,10 @@
         width: 19%;
         text-align: center;
         margin: 0.5%;
+    }
+    
+    .lessCards {
+        width: 48%;
     }
     
     .card-img {

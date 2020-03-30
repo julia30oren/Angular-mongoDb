@@ -1,13 +1,19 @@
 <div class="top-container">
-    <h1>Scroll Down</h1>
-    <p>Scroll down to see the sticky effect.</p>
+    <h1> Demo Site </h1>
+    <p>+9072524458442</p>
 </div>
+<style>
+    .top-container {
+        text-align: center;
+        color: grey;
+    }
+</style>
 
 <!-- header -->
 <div class="header" id="myHeader" [class.sticky]="sticky" #stickyMenu>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/">Product Store</a>
+        <a class="navbar-brand" href="/"> <img src="https://dcassetcdn.com/design_img/1698888/436878/436878_9312312_1698888_d128d5a4_image.jpg" alt="sorry"> Store</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -21,133 +27,57 @@
                     <button><a class="nav-link" href="/shop"> Shop <span class="sr-only">(current)</span></a></button>
                 </li>
             </ul>
-            <!-- <form class="form-inline my-2 my-lg-0">
-                <input id="search-move" class="form-control mr-sm-2" type="search" placeholder="Search.." aria-label="Search">
-            </form> -->
         </div>
 
-        <!-- <ul class="navbar-nav">
-            <li class="nav-item" *ngIf="userName">
-                <button (click)="openCart()" class="nav-link"> My Cart </button>
-            </li>
-
-            <span class="navbar-text" *ngIf="userName">
-           <p id="user">User <b>{{userName}}</b></p>
-          </span>
-            <li class="nav-item" *ngIf="!userName">
-                <a class="nav-link" href="/sign-in"> SignIn </a>
-            </li>
-
-            <li class="nav-item" *ngIf="userName">
-                <button (click)="signOut()" class="nav-link"> SignOut </button>
-            </li>
-        </ul> -->
+        <div id="navbarNav2">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <h2> User Alisa </h2>
+                </li>
+            </ul>
+        </div>
     </nav>
 
 </div>
 
-
-
-
-
-<div [ngClass]="{open: open_cart, close: !open_cart}">
-    <table class="table table-hover" *ngIf="open_cart">
-        <thead>
-            <tr>
-                <th scope="col">Product Name</th>
-                <th scope="col">Picter</th>
-                <th class="price-text" scope="col">Price</th>
-                <th class="price-text" scope="col">Quantity</th>
-                <th class="price-text" scope="col">Total Price</th>
-                <th></th>
-            </tr>
-        </thead>
-
-        <tbody>
-            <tr *ngFor="let item of my_cart">
-                <th scope="row">{{item.name}}</th>
-                <td><img class="cart-img" src="{{item.image}}" alt="..."></td>
-                <td class="price-text">{{item.price}} $</td>
-                <td class="price-text"><button (click)="less(item.item_id, item.amount)">-</button> {{item.amount}} <button (click)="more(item.item_id, item.amount)">+</button></td>
-                <td class="price-text">{{(item.amount * item.price).toFixed(2)}} $</td>
-                <th><button class="nav-link" (click)="delete(item.item_id)">X</button></th>
-            </tr>
-        </tbody>
-    </table>
-
-    <div id="finale-price" *ngIf="total_price">
-        <div>
-            <p>Total <b>{{total_price.toFixed(2)}}</b> $$$ </p>
-            <button class="nav-link">Order</button>
-        </div>
-    </div>
-</div>
-
-<div class="content">
-    <router-outlet></router-outlet>
-</div>
-
 <style>
-    /* “on scroll” sticky menu */
+    img {
+        height: 150px;
+    }
     
-    .top-container,
+    .header {
+        margin-left: 15%;
+        width: 70%;
+        border: black solid 1px;
+    }
+    
     .content {
-        background-color: #4d4d4d86;
         padding: 30px;
         text-align: center;
+        height: 900px;
     }
     
     .sticky {
         position: fixed;
         top: 0;
-        width: 100%;
-        z-index: 10;
+        z-index: 100;
     }
+</style>
+
+<div class="content">
+    <router-outlet></router-outlet>
+</div>
+
+
+<style>
+    /* “on scroll” sticky menu */
     
     .content {
-        /* height: 100%; */
-        height: 200vh;
-    }
-    /* cart */
-    
-    .open {
-        width: 40%;
-        transition: width 1.5s;
+        display: flex;
+        border: black solid 1px;
         height: 100%;
-        position: fixed;
-        right: 0;
-        padding: 1%;
-        z-index: 999;
-        background-color: aqua;
-        overflow: scroll;
-    }
-    
-    .close {
-        width: 0%;
-    }
-    
-    #cart {
-        height: 100%;
-        position: fixed;
-        right: 0;
-        width: 40%;
-        padding: 1%;
-        z-index: 999;
-        background-color: aqua;
-    }
-    
-    .cart-img {
-        height: 50px;
-        width: 50px;
-    }
-    
-    .price-text {
-        text-align: center;
-    }
-    
-    #finale-price {
-        position: absolute;
-        right: 5%;
+        width: 70%;
+        margin-left: 15%;
     }
     /* NAVBAR */
     
@@ -160,15 +90,4 @@
         margin-right: 20px;
         text-align: center;
     }
-    /* .form-inline {
-        margin-left: 10%;
-    } */
-    /* span {
-        text-align: justify;
-    }
-    
-    #user {
-        width: 200px;
-        text-align: center;
-    } */
 </style>
