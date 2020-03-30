@@ -1,4 +1,5 @@
 export interface User_Interface {
+    name: string,
     first_name: string,
     last_name: string,
     id: number,

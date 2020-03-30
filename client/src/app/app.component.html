@@ -1,48 +1,54 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/">Product Store</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+<div class="top-container">
+    <h1>Scroll Down</h1>
+    <p>Scroll down to see the sticky effect.</p>
+</div>
+
+<!-- header -->
+<div class="header" id="myHeader" [class.sticky]="sticky" #stickyMenu>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">Product Store</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link" href="/home"> Home <span class="sr-only">(current)</span></a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <button><a class="nav-link" href="/home"> Home <span class="sr-only">(current)</span></a></button>
+                </li>
+                <li class="nav-item active">
+                    <button><a class="nav-link" href="/shop"> Shop <span class="sr-only">(current)</span></a></button>
+                </li>
+            </ul>
+            <!-- <form class="form-inline my-2 my-lg-0">
+                <input id="search-move" class="form-control mr-sm-2" type="search" placeholder="Search.." aria-label="Search">
+            </form> -->
+        </div>
+
+        <!-- <ul class="navbar-nav">
+            <li class="nav-item" *ngIf="userName">
+                <button (click)="openCart()" class="nav-link"> My Cart </button>
             </li>
 
-            <!-- <li class="nav-item">
-                <a class="nav-link" href="/sign-up"> SignUp </a>
-            </li> -->
-            <!-- <li class="nav-item">
-        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-      </li> -->
-
-        </ul>
-        <form class="form-inline my-2 my-lg-0">
-            <input id="search-move" class="form-control mr-sm-2" type="search" placeholder="Search.." aria-label="Search">
-        </form>
-    </div>
-
-
-
-    <ul class="navbar-nav">
-        <li class="nav-item" *ngIf="userName">
-            <button (click)="openCart()" class="nav-link"> My Cart </button>
-            <!-- <a class="nav-link" href="/my-cart"> My Cart </a> -->
-        </li>
-
-        <span class="navbar-text" *ngIf="userName">
+            <span class="navbar-text" *ngIf="userName">
            <p id="user">User <b>{{userName}}</b></p>
           </span>
-        <li class="nav-item" *ngIf="!userName">
-            <a class="nav-link" href="/sign-in"> SignIn </a>
-        </li>
+            <li class="nav-item" *ngIf="!userName">
+                <a class="nav-link" href="/sign-in"> SignIn </a>
+            </li>
 
-        <li class="nav-item" *ngIf="userName">
-            <button (click)="signOut()" class="nav-link"> SignOut </button>
-        </li>
-    </ul>
-</nav>
+            <li class="nav-item" *ngIf="userName">
+                <button (click)="signOut()" class="nav-link"> SignOut </button>
+            </li>
+        </ul> -->
+    </nav>
+
+</div>
+
+
+
+
 
 <div [ngClass]="{open: open_cart, close: !open_cart}">
     <table class="table table-hover" *ngIf="open_cart">
@@ -77,11 +83,33 @@
     </div>
 </div>
 
-
-<router-outlet></router-outlet>
-
+<div class="content">
+    <router-outlet></router-outlet>
+</div>
 
 <style>
+    /* “on scroll” sticky menu */
+    
+    .top-container,
+    .content {
+        background-color: #4d4d4d86;
+        padding: 30px;
+        text-align: center;
+    }
+    
+    .sticky {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 10;
+    }
+    
+    .content {
+        /* height: 100%; */
+        height: 200vh;
+    }
+    /* cart */
+    
     .open {
         width: 40%;
         transition: width 1.5s;
@@ -96,37 +124,6 @@
     
     .close {
         width: 0%;
-    }
-    
-    #finale-price {
-        position: absolute;
-        right: 5%;
-    }
-    /* .navbar-text {
-        padding-left: 5%;
-        padding-right: 1%;
-    } */
-    /* .navbar {
-        position: fixed;
-    } */
-    
-    .form-inline {
-        margin-left: 10%;
-    }
-    
-    span {
-        text-align: justify;
-    }
-    
-    #user {
-        width: 200px;
-        text-align: center;
-    }
-    
-    li {
-        margin-left: 20px;
-        margin-right: 20px;
-        text-align: center;
     }
     
     #cart {
@@ -147,4 +144,31 @@
     .price-text {
         text-align: center;
     }
+    
+    #finale-price {
+        position: absolute;
+        right: 5%;
+    }
+    /* NAVBAR */
+    
+    #navbarNav {
+        margin-left: 5%;
+    }
+    
+    li {
+        margin-left: 20px;
+        margin-right: 20px;
+        text-align: center;
+    }
+    /* .form-inline {
+        margin-left: 10%;
+    } */
+    /* span {
+        text-align: justify;
+    }
+    
+    #user {
+        width: 200px;
+        text-align: center;
+    } */
 </style>

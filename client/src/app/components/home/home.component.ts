@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MainService } from 'src/app/services/main.service';
-import { Router, ActivatedRoute } from '@angular/router';
-import { DataService } from 'src/app/services/data.service';
+import { DataService } from 'src/app/services/data/data.service';
 
 @Component({
   selector: 'app-home',
@@ -10,56 +9,25 @@ import { DataService } from 'src/app/services/data.service';
 })
 export class HomeComponent implements OnInit {
 
-  public data_db: Array<any>;
-  public grouped_by: Array<any> = null;
-  public user_id: number;
-  public adding_res: object;
+  public user_data_db: object;
+  public ection_to_do: string = 'login';
 
   constructor(
     private main_service: MainService,
     private data_service: DataService,
-    private router: Router
   ) { }
 
   ngOnInit() {
-    this.main_service.getProductes_fromDB()
-      .subscribe(data => { this.data_db = data; this.data_service.saveProductesToService(this.data_db) });
+    this.user_data_db = JSON.parse(localStorage.getItem('user'));
+    // const c = this.data_service.user_name();
+    // console.log(c);
+    // .subscribe(arg => console.log(arg));
   }
 
-  addToCart(item_id: number) {
-    const usersDaTa = JSON.parse(localStorage.getItem('user'));
-    this.user_id = usersDaTa.userID;
-    // console.log('click', this.user_id, item_id);
-    this.main_service.saveProducte(item_id, this.user_id)
-      .subscribe(data => { console.log('///', data); this.adding_res = data; this.data_service.addTo_myCart(this.adding_res) });
+  do_signout() {
+    this.ection_to_do = 'login';
+    this.user_data_db = null;
+    localStorage.clear();
   }
-
-  groupeBy(groupe: string) {
-    // console.log('groupe by', groupe);
-    if (groupe === 'All') {
-      this.grouped_by = null;
-    } else {
-      const result = this.data_db.filter(item => item.category === groupe)
-      this.grouped_by = result;
-    }
-  }
-
-
-
-  // moreDetail(id: string) {
-  //   this.router.navigate(['/task', id]);
-  // }
-
-  // done(id: string) {
-  //   this.main_service.setTask_done(id)
-  //     .subscribe(data => console.log(data));
-  //   location.reload();
-  // }
-
-  // delete(id: string) {
-  //   this.main_service.Delete_Task(id)
-  //     .subscribe(data => console.log(data));
-  //   location.reload();
-  // }
 
 }

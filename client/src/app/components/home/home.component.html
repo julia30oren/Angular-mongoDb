@@ -1,93 +1,83 @@
-<!-- <p>{{data_db | json}}</p> -->
-<!-- <p>{{grouped_by| json}}</p> -->
+<div id="main">
 
-<h2>Productes:</h2>
+    <!-- <p>{{ user_data_db || json}}</p> -->
+    <div id="loges">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="/shop" *ngIf="user_data_db && user_data_db.whish_list.length >1"> Resume shoping <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="/shop" *ngIf="user_data_db &&user_data_db.whish_list.length <1"> Start shoping <span class="sr-only">(current)</span></a>
+                <p *ngIf="!user_data_db">To start Shoping you need to sign in.</p>
+            </li>
+        </ul>
 
-<ul class="nav justify-content-center">
-    <li class="nav-item">
-        <button id="first_link" class="nav-link" (click)="groupeBy('All')">All</button>
-    </li>
-    <li class="nav-item">
-        <button class="nav-link" (click)="groupeBy('Milk & Eggs')">Milk & Eggs</button>
-    </li>
-    <li class="nav-item">
-        <button class="nav-link" (click)="groupeBy('Fruit & Vegetables')">Fruit & Vegetables</button>
-    </li>
-    <li class="nav-item">
-        <button class="nav-link" (click)="groupeBy('Meat & Fish')">Meat & Fish</button>
-    </li>
-    <li class="nav-item">
-        <button class="nav-link" (click)="groupeBy('Drinks')">Drinks</button>
-    </li>
-</ul>
-
-<div class="cards-group" *ngIf="grouped_by === null">
-    <div class="card" *ngFor="let item of data_db">
-        <div class="">
-            <img src={{item.image}} class="card-img" alt="...">
+        <div *ngIf="ection_to_do ==='login'">
+            <app-signin></app-signin>
         </div>
-        <div class="">
-            <h5 class="card-title">{{item.name}}</h5>
-            <p class="card-text">{{item.price}} $</p>
-            <p class="card-text">{{item.category}}</p>
+
+        <div *ngIf="ection_to_do ==='signup'">
+            <app-signup></app-signup>
         </div>
-        <button (click)="addToCart(item._id)">+</button>
+
+        <div *ngIf="ection_to_do ==='password-change'">
+            <app-passchange></app-passchange>
+        </div>
+
+        <div>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <button class="nav-link" (click)="ection_to_do = 'login'"> SignIn </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" (click)="ection_to_do = 'signup'"> SignUp </button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link" (click)="ection_to_do = 'password-change'"> Change Password? </button>
+                </li>
+                <li class="nav-item" *ngIf="user_data_db">
+                    <button class="nav-link" (click)="do_signout()"> Sign Out </button>
+                </li>
+            </ul>
+        </div>
+
+
+    </div>
+    <div id="commercial">
+
+    </div>
+
+    <div id="info">
+
     </div>
 </div>
-
-<div class="cards-group" *ngIf="grouped_by !== null">
-    <div class="card" *ngFor="let item of grouped_by" (click)="eddToCart(item._id)">
-        <div class="">
-            <img src={{item.image}} class="card-img" alt="...">
-        </div>
-        <div class="">
-            <h5 class="card-title">{{item.name}}</h5>
-            <p class="card-text">{{item.price}} $</p>
-            <p class="card-text">{{item.category}}</p>
-            <button (click)="addToCart(item._id)">+</button>
-        </div>
-    </div>
-</div>
-
-
 
 <style>
-    h2 {
-        margin: 50px;
-    }
-    
-    button {
-        border: none;
-    }
-    
-    #first_link {
-        border-left: solid black 0.5px;
-    }
-    
-    .nav-link {
-        border-right: solid black 0.5px;
-    }
-    
-    .cards-group {
+    #main {
         margin-left: 10%;
-        margin-right: 10%;
+        background-color: rgba(137, 43, 226, 0.274);
+        height: 95%;
+        width: 80%;
         display: flex;
-        flex-wrap: wrap;
     }
     
-    .card {
-        width: 19%;
-        text-align: center;
-        margin: 0.5%;
-    }
-    
-    .card-img {
+    #loges,
+    #commercial,
+    #info {
         margin: 1%;
-        height: 200px;
-        width: 200px;
+        height: 95%;
     }
     
-    h2 {
-        text-align: center;
+    #loges {
+        background-color: rgba(210, 105, 30, 0.329);
+        width: 35%;
+    }
+    
+    #commercial {
+        background-color: rgba(30, 210, 135, 0.329);
+        width: 25%;
+    }
+    
+    #info {
+        background-color: rgba(30, 168, 210, 0.329);
+        width: 30%;
     }
 </style>

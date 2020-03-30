@@ -6,11 +6,21 @@ import { AppComponent } from './app.component';
 import { routingComponents } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { ShopComponent } from './components/shop/shop.component';
+import { HomeComponent } from './components/home/home.component';
+import { SigninComponent } from './components/signin/signin.component';
+import { SignupComponent } from './components/signup/signup.component';
+import { PasschangeComponent } from './components/passchange/passchange.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    routingComponents
+    HomeComponent,
+    ShopComponent,
+    routingComponents,
+    SigninComponent,
+    SignupComponent,
+    PasschangeComponent
   ],
   imports: [
     BrowserModule,

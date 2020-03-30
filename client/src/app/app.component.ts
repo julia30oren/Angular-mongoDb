@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, HostListener } from '@angular/core';
 import { MainService } from './services/main.service';
-import { DataService } from './services/data.service';
 
 @Component({
   selector: 'app-root',
@@ -9,9 +8,10 @@ import { DataService } from './services/data.service';
   providers: [MainService]
 })
 export class AppComponent implements OnInit {
-
+  @ViewChild('stickyMenu', null) menuElement: ElementRef;
+  elementPosition: any;
+  public sticky: boolean = false;
   public userName: string;
-
   public open_cart: boolean = false;
   public user: any;
   public my_cart: Array<any>;
@@ -20,8 +20,7 @@ export class AppComponent implements OnInit {
   public total_price: number;
   //{ am: 2, price: 10 }, { am: 1, price: 8 }, { am: 2, price: 5 }
   constructor(
-    private main_service: MainService,
-    private data_service: DataService
+    private main_service: MainService
   ) { }
 
   ngOnInit() {
@@ -37,8 +36,8 @@ export class AppComponent implements OnInit {
 
     // this.userName = JSON.parse(localStorage.getItem('user')).userName;
 
-    const userID = JSON.parse(localStorage.getItem('user')).userID;
-    console.log(userID);
+    const userID = JSON.parse(localStorage.getItem('user')).userID || null;
+    // console.log(userID);
     this.main_service.getUser_cart(userID)
       .subscribe(data => {
         this.user = data;
@@ -49,6 +48,19 @@ export class AppComponent implements OnInit {
       });
   }
 
+  ngAfterViewInit() {
+    this.elementPosition = this.menuElement.nativeElement.offsetTop;
+  }
+
+  @HostListener('window:scroll', ['$event'])
+  handleScroll() {
+    const windowScroll = window.pageYOffset;
+    if (windowScroll >= this.elementPosition) {
+      this.sticky = true;
+    } else {
+      this.sticky = false;
+    }
+  }
   signOut() {
     // this.data_service.deleteUser();
     localStorage.removeItem('user');
