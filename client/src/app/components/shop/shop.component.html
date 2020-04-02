@@ -3,8 +3,8 @@
 
 <div id="main">
     <div id="content" [ngClass]="{xz: !open_cart, xz2: open_cart}">
-        <div>
-            <button *ngIf="!open_cart" class="nav-link" id="search-button">Search</button>
+        <div class="extra">
+            <button *ngIf="!open_cart" class="nav-link " id="search-button">Search</button>
         </div>
         <ul class="nav justify-content-center">
             <li class="nav-item">
@@ -25,7 +25,7 @@
         </ul>
 
         <div class="cards-group" *ngIf="grouped_by === null">
-            <div class="card" *ngFor="let item of data_db" [ngClass]="{lessCards: open_cart}">
+            <div class="card" *ngFor="let item of productes_data_db" [ngClass]="{lessCards: open_cart}">
                 <div class="">
                     <img src={{item.image}} class="card-img" alt="...">
                 </div>
@@ -53,49 +53,55 @@
         </div>
     </div>
 
-    <div>
+    <div class="extra">
         <button *ngIf="!open_cart" class="nav-link" (click)="open_cart = !open_cart">My Cart</button>
         <button *ngIf="open_cart" class="nav-link" (click)="open_cart = !open_cart">=></button>
     </div>
 </div>
 
 <div [ngClass]="{open: open_cart, close: !open_cart}">
-    <table class="table table-hover" *ngIf="open_cart">
-        <thead>
-            <tr>
-                <th scope="col">Product Name</th>
-                <th scope="col">Picter</th>
-                <th class="price-text" scope="col">Price</th>
-                <th class="price-text" scope="col">Quantity</th>
-                <th class="price-text" scope="col">Total Price</th>
-                <th></th>
-            </tr>
-        </thead>
+    <div *ngIf="message && open_cart">
+        <h3>{{message}}</h3>
+        <a href="/home"> Go LogIn</a>
+    </div>
+    <div *ngIf="open_cart && !message">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Picter</th>
+                    <th class="price-text" scope="col">Price</th>
+                    <th class="price-text" scope="col">Quantity</th>
+                    <th class="price-text" scope="col">Total Price</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of my_cart">
+                    <th scope="row">{{item.name}}</th>
+                    <td><img class="cart-img" src="{{item.image}}" alt="..."></td>
+                    <td class="price-text">{{item.price}} $</td>
+                    <td class="price-text"><button (click)="less(item.item_id, item.amount)">-</button> {{item.amount}} <button (click)="more(item.item_id, item.amount)">+</button></td>
+                    <td class="price-text">{{(item.amount * item.price).toFixed(2)}} $</td>
+                    <th><button class="nav-link" (click)="delete(item.item_id)">X</button></th>
+                </tr>
+            </tbody>
+        </table>
 
-        <tbody>
-            <tr *ngFor="let item of my_cart">
-                <th scope="row">{{item.name}}</th>
-                <td><img class="cart-img" src="{{item.image}}" alt="..."></td>
-                <td class="price-text">{{item.price}} $</td>
-                <td class="price-text"><button (click)="less(item.item_id, item.amount)">-</button> {{item.amount}} <button (click)="more(item.item_id, item.amount)">+</button></td>
-                <td class="price-text">{{(item.amount * item.price).toFixed(2)}} $</td>
-                <th><button class="nav-link" (click)="delete(item.item_id)">X</button></th>
-            </tr>
-        </tbody>
-    </table>
-
-    <div id="finale-price" *ngIf="total_price">
-        <div class="user-inf">
-            <h4>Total <b>{{total_price.toFixed(2)}}</b> $ </h4>
-        </div>
-        <div class="user-inf">
-            <button id="order-button"> Order </button>
+        <div id="finale-price" *ngIf="total_price">
+            <div class="user-inf">
+                <h4>Total <b>{{total_price.toFixed(2)}}</b> $ </h4>
+            </div>
+            <div class="user-inf">
+                <button id="order-button"> Order </button>
+            </div>
         </div>
     </div>
 </div>
 
 
 <style>
+    b
     /* cart */
     
     #search-button {
@@ -139,6 +145,10 @@
         padding: 1%;
         z-index: 999;
         border: black solid 1px;
+    }
+    
+    .extra {
+        margin-top: 5%;
     }
     
     .cart-img {

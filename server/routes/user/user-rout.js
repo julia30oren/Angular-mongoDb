@@ -50,8 +50,12 @@ router.post('/user-login', async(req, res) => {
     const { email, password } = req.body;
     try {
         const login = await UsersSchema.find({ "email": email, "password": password });
-        console.log({ name: login[0].name, _id: login[0]._id, whish_list: login[0].whish_list });
-        res.json({ name: login[0].name, _id: login[0]._id, whish_list: login[0].whish_list });
+        if (!login[0]) {
+            res.json({ message: 'No user found' });
+        } else {
+            // console.log({ name: login[0].name, _id: login[0]._id, whish_list: login[0].whish_list });
+            res.json({ name: login[0].name, _id: login[0]._id, whish_list: login[0].whish_list });
+        }
     } catch (err) {
         return res.status(500).send({ message: err.message })
     }

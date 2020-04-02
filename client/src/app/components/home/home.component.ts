@@ -9,7 +9,7 @@ import { DataService } from 'src/app/services/data/data.service';
 })
 export class HomeComponent implements OnInit {
 
-  public user_data_db: object;
+  public user_name: string;
   public ection_to_do: string = 'login';
 
   constructor(
@@ -18,20 +18,12 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.user_data_db = JSON.parse(localStorage.getItem('user'));
-    // const c = this.data_service.user_name();
-    // console.log(c);
-    // .subscribe(arg => console.log(arg));
+    this.data_service.user_name_from_service.subscribe(data => { this.user_name = data; });
   }
 
   do_signout() {
     this.ection_to_do = 'login';
-    this.user_data_db = null;
+    this.data_service.save_UserData([], '');
     localStorage.clear();
   }
-  // signOut() {
-  //   // this.data_service.deleteUser();
-  //   localStorage.removeItem('user');
-  //   window.location.reload();
-  // }
 }

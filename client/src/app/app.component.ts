@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { DataService } from './services/data/data.service';
 
 @Component({
   selector: 'app-root',
@@ -9,18 +10,22 @@ export class AppComponent implements OnInit {
   @ViewChild('stickyMenu', null) menuElement: ElementRef;
   elementPosition: any;
   public sticky: boolean = false;
+
+  public user_data: Array<any>;
   public userName: string;
 
-  constructor() { }
+  constructor(
+    private data_service: DataService
+  ) { }
 
   ngOnInit() {
-
-    setInterval(() => {
-      if (JSON.parse(localStorage.getItem('user'))) {
-        const usersDaTa = JSON.parse(localStorage.getItem('user'));
-        this.userName = usersDaTa.userName;
+    this.data_service.user_name_from_service.subscribe(data => {
+      if (data === '') {
+        this.userName = 'no user loged-in';
+      } else {
+        this.userName = 'Hi, ' + data;
       }
-    }, 1000)
+    });
   }
 
   ngAfterViewInit() {

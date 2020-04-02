@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MainService } from 'src/app/services/main.service';
 import { Router } from '@angular/router';
+import { DataService } from 'src/app/services/data/data.service';
 
 @Component({
   selector: 'app-shop',
@@ -9,12 +10,14 @@ import { Router } from '@angular/router';
 })
 export class ShopComponent implements OnInit {
 
-  public data_db: Array<any>;
+  public productes_data_db: Array<any>;
   public grouped_by: Array<any> = null;
-  public user_id: number;
-  public adding_res: object;
-  public my_cart: Array<any>;
   public open_cart: boolean = false;
+  public user_id: number;
+  public my_cart: Array<any>;
+  public message: string;
+
+  public adding_res: object;
   public user: any;
   public test_array: Array<any> = [];
   public total_price: number;
@@ -22,22 +25,31 @@ export class ShopComponent implements OnInit {
 
   constructor(
     private main_service: MainService,
+    private data_service: DataService,
     private router: Router
   ) { }
 
   ngOnInit() {
+    //geting productes from database
     this.main_service.getProductes_fromDB()
-      .subscribe(data => { this.data_db = data; });
-    const userID = JSON.parse(localStorage.getItem('user')).userID || null;
-    // console.log(userID);
-    this.main_service.getUser_cart(userID)
-      .subscribe(data => {
-        this.user = data;
-        localStorage.setItem('user', JSON.stringify({ userName: this.user.name, userID: this.user._id, whish_list: this.user.whish_list }));
-        this.my_cart = this.user.whish_list;
-
-        this.getTotalPrice();
-      });
+      .subscribe(data => { this.productes_data_db = data; });
+    //subscribing service
+    this.data_service.user_id_from_service.subscribe(data => {
+      if (data === null) {
+        this.message = 'to shope you need to login'
+      } else {
+        this.user_id = data;
+        this.data_service.order_list_from_service.subscribe(data => {
+          if (!data[0]) {
+            this.message = 'cart is empty';
+          } else {
+            this.my_cart = data;
+          }
+        });
+      }
+    });
+    //counting final some
+    this.getTotalPrice();
   }
 
 
@@ -48,7 +60,6 @@ export class ShopComponent implements OnInit {
       this.test_array.push(a);
     });
     this.total_price = this.test_array.reduce((a, b) => a + b, 0);
-    // console.log(this.total_price)
   }
 
   openCart() {
@@ -117,7 +128,7 @@ export class ShopComponent implements OnInit {
     if (groupe === 'All') {
       this.grouped_by = null;
     } else {
-      const result = this.data_db.filter(item => item.category === groupe)
+      const result = this.productes_data_db.filter(item => item.category === groupe)
       this.grouped_by = result;
     }
   }

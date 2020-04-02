@@ -32,7 +32,7 @@
         <div id="navbarNav2">
             <ul class="navbar-nav">
                 <li class="nav-item active">
-                    <h2> User Alisa </h2>
+                    <h2> {{userName}} </h2>
                 </li>
             </ul>
         </div>
@@ -51,12 +51,6 @@
         border: black solid 1px;
     }
     
-    .content {
-        padding: 30px;
-        text-align: center;
-        height: 900px;
-    }
-    
     .sticky {
         position: fixed;
         top: 0;
@@ -73,9 +67,9 @@
     /* “on scroll” sticky menu */
     
     .content {
-        display: flex;
+        justify-content: center;
+        text-align: center;
         border: black solid 1px;
-        height: 100%;
         width: 70%;
         margin-left: 15%;
     }

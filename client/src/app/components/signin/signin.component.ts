@@ -18,8 +18,7 @@ export class SigninComponent implements OnInit {
 
   constructor(
     private main_service: MainService,
-    private data_service: DataService,
-    private router: Router
+    private data_service: DataService
   ) { }
 
   ngOnInit() {
@@ -38,14 +37,16 @@ export class SigninComponent implements OnInit {
       email: this.email,
       password: this.password
     }
-    // console.log(this.user)
     this.main_service.logIn(this.user)
       .subscribe(data => {
-        // console.log(data);
-        this.logedInUser = data;
-        this.data_service.save_UserData(data);
-        localStorage.setItem('user', JSON.stringify({ userName: this.logedInUser.name, userID: this.logedInUser._id, whish_list: this.logedInUser.whish_list }));
-        // this.router.navigate(['/home']);
+        console.log(data.message);
+        if (data.message) {
+          alert(data.message)
+        } else {
+          this.logedInUser = data;
+          this.data_service.save_UserData(data, this.logedInUser.name, this.logedInUser._id, this.logedInUser.whish_list);
+          localStorage.setItem('user', JSON.stringify({ userName: this.logedInUser.name, userID: this.logedInUser._id, whish_list: this.logedInUser.whish_list }));
+        }
       })
   }
 
