@@ -22,6 +22,14 @@ router.get('/:id', getUsersById, async(req, res) => {
     }
 });
 
+router.get('/cart/:id', getUsersById, async(req, res) => {
+    try {
+        res.send(res.thisUser.whish_list)
+    } catch (error) {
+        res.status(400).json({ message: ` We have an error with users data : ${err.message}` })
+    }
+});
+
 router.post('/new-user', async(req, res) => {
     // console.log(req.body);
     const newUser = new UsersSchema({
@@ -75,14 +83,17 @@ router.post('/password-change', async(req, res) => {
 router.post('/cart-add', async(req, res) => {
     const { user_id, item_id } = req.body;
     try {
+        /// if item olready exist in users cart:
         const searchItem_inUser = await UsersSchema.find({ "_id": user_id, "whish_list.item_id": item_id });
+        /// if EXIST
         if (searchItem_inUser[0]) {
             const thisProduct = searchItem_inUser[0].whish_list.filter(item => item.item_id === item_id);
             const newAmount = thisProduct[0].amount + 1;
             const addItem_toCart = await UsersSchema.update({ "_id": user_id, "whish_list.item_id": item_id }, { $set: { "whish_list.$.amount": newAmount } });
-            console.log(addItem_toCart);
-            res.json(`Item was addet to cart successfully. ${thisProduct[0].name} total amount: ${newAmount}`)
+            // console.log(thisProduct);
+            res.json({ message: `Item was addet to cart successfully. ${thisProduct[0].name} total amount: ${newAmount}`, item: thisProduct, amount: newAmount })
         } else {
+            /// if  NOT EXIST
             const searchItem = await ProductSchema.findById(item_id);
             const newItem = {
                 item_id: searchItem._id,
@@ -92,9 +103,10 @@ router.post('/cart-add', async(req, res) => {
                 price: searchItem.price,
                 amount: 1
             };
-            console.log(newItem)
+            // console.log(newItem)
             const addItem_toCart = await UsersSchema.updateOne({ "_id": user_id }, { $push: { "whish_list": newItem } });
-            res.json(`Item was addet to cart successfully.`);
+            // console.log(addItem_toCart)
+            res.json({ message: `Item was addet to cart successfully.`, item: newItem, amount: 1 });
         }
     } catch (err) {
         return res.status(500).send({ message: err.message })
@@ -110,7 +122,7 @@ router.post('/cart-add', async(req, res) => {
 
 //remove one -1 or item
 router.post('/cart-remove', async(req, res) => {
-    const { user_id, item_id, amount } = req.body;
+    const { user_id, item_id } = req.body;
     try {
         const searchItem = await UsersSchema.find({ "_id": user_id, "whish_list.item_id": item_id });
         if (searchItem[0]) {
@@ -118,16 +130,48 @@ router.post('/cart-remove', async(req, res) => {
             if (thisItem[0].amount > 1) {
                 const newAmount = thisItem[0].amount - 1;
                 const removeItem_fromCart = await UsersSchema.update({ "_id": user_id, "whish_list.item_id": item_id }, { $set: { "whish_list.$.amount": newAmount } });
-                res.json(`1 ${thisItem[0].name} was removed from cart successfully. Now ${newAmount}`);
+                res.json({ message: `1 ${thisItem[0].name} was removed from cart successfully. Now ${newAmount}` });
             } else {
                 const remove1Item_fromCart = await UsersSchema.update({ "_id": user_id }, { $pull: { "whish_list": { "item_id": item_id } } });
-                res.json(`Item ${thisItem[0].name} was removed from cart successfully.`)
+                res.json({ message: `Item ${thisItem[0].name} was removed from cart successfully.` })
             }
         } else {
             return res.status(500).send('no such product')
         }
     } catch (err) {
         return res.status(500).send({ message: err.message })
+    }
+});
+
+router.post('/cart-removeItem', async(req, res) => {
+    const { user_id, item_id } = req.body;
+    // deletePropuct(user_id, item_id);
+    try {
+        const searchItem = await UsersSchema.find({ "_id": user_id, "whish_list.item_id": item_id });
+        if (searchItem[0]) {
+            const thisItem = searchItem[0].whish_list.filter(item => item.item_id === item_id);
+            const remove1Item_fromCart = await UsersSchema.update({ "_id": user_id }, { $pull: { "whish_list": { "item_id": item_id } } });
+            res.json({ message: `Item ${thisItem[0].name} was removed from cart successfully.` })
+        } else {
+            return res.status(500).send('no such product')
+        }
+    } catch (err) {
+        return res.status(500).send({ message: err.message })
+    }
+});
+
+// function deletePropuct(user_id, item_id) {
+//     console.log('function ', user_id, item_id);
+
+// }
+
+router.get('/delete-WL/:id', async(req, res) => {
+    // console.log('delete ', req.params.sid)
+    try {
+        const cleanCart = await UsersSchema.update({ "_id": req.params.id }, { $set: { "whish_list": [] } });
+        res.send({ message: `cart was deleted` })
+    } catch (error) {
+        res.status(400).json({ message: ` We have an error with users data : ${err.message}` })
     }
 });
 

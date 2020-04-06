@@ -1,0 +1,58 @@
+<div id="cart">
+    <p *ngIf="message">{{message}}</p>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Product Name</th>
+                <th scope="col">Picter</th>
+                <th class="price-text" scope="col">Price</th>
+                <th class="price-text" scope="col">Quantity</th>
+                <th class="price-text" scope="col">Total Price</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of my_cart">
+                <th scope="row">{{item.name}}</th>
+                <td><img class="cart-img" src="{{item.image}}" alt="..."></td>
+                <td class="price-text">{{item.price}} $</td>
+                <td class="price-text"><button (click)="less(item.item_id, item.amount)">-</button> {{item.amount}} <button (click)="more(item.item_id)">+</button></td>
+                <td class="price-text">{{(item.amount * item.price).toFixed(2)}} $</td>
+                <th><button class="nav-link" (click)="delete(item.item_id)">X</button></th>
+            </tr>
+        </tbody>
+    </table>
+
+    <div id="finale-price" *ngIf="total_price">
+        <div class="user-inf">
+            <h4>Total <b>{{total_price.toFixed(2)}}</b> $ </h4>
+        </div>
+        <div class="user-inf cart-buttons">
+            <button id="order-button"> Order </button>
+        </div>
+        <div class="user-inf cart-buttons">
+            <button id="clean-button" (click)="cleaneCart()"> Clean the Cart </button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .cart-img {
+        height: 50px;
+        width: 50px;
+    }
+    
+    .price-text {
+        text-align: center;
+    }
+    
+    .cart-buttons {
+        margin-top: 15px;
+    }
+    
+    .cart-buttons button {
+        border: none;
+        padding: 5px;
+        background-color: rgba(128, 128, 128, 0.479);
+    }
+</style>

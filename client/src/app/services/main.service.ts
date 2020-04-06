@@ -32,7 +32,7 @@ export class MainService {
   }
 
   getUser_cart(id: number): Observable<User_Interface[]> {
-    const getUsers_result = this.http.get<User_Interface[]>(`${this.Users_url}/${id}`);
+    const getUsers_result = this.http.get<User_Interface[]>(`${this.Users_url}/cart/${id}`);
     return getUsers_result;
   }
 
@@ -53,10 +53,21 @@ export class MainService {
     return item_result;
   }
 
-  deleteProducte(item_id: number, user_id: number): Observable<Product_Interface[]> {
-    const deleteFromCart = { "user_id": user_id, "item_id": item_id };
-    const item_result = this.http.post<Product_Interface[]>(`${this.Users_url}/cart-remove`, deleteFromCart);
+  productAmount_decrease(item_id: number, user_id: number): Observable<Product_Interface[]> {
+    const decrease_inCart = { "user_id": user_id, "item_id": item_id };
+    const item_result = this.http.post<Product_Interface[]>(`${this.Users_url}/cart-remove`, decrease_inCart);
     return item_result;
+  }
+
+  product_delete(item_id: number, user_id: number): Observable<Product_Interface[]> {
+    const deleteFromCart = { "user_id": user_id, "item_id": item_id };
+    const item_result = this.http.post<Product_Interface[]>(`${this.Users_url}/cart-removeItem`, deleteFromCart);
+    return item_result;
+  }
+
+  cleanCart_DB(user_id: number): Observable<Product_Interface[]> {
+    const cleanCart_result = this.http.get<Product_Interface[]>(`${this.Users_url}/delete-WL/${user_id}`);
+    return cleanCart_result;
   }
 
 }

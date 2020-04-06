@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit {
 
   do_signout() {
     this.ection_to_do = 'login';
-    this.data_service.save_UserData([], '');
+    this.data_service.save_UserData('');
     localStorage.clear();
   }
 }

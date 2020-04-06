@@ -9,5 +9,7 @@ export interface User_Interface {
     street: string,
     house: string,
     apartments: string,
-    phone_num: number
+    phone_num: number,
+
+    message: string
 }

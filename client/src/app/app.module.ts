@@ -11,6 +11,7 @@ import { HomeComponent } from './components/home/home.component';
 import { SigninComponent } from './components/signin/signin.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { PasschangeComponent } from './components/passchange/passchange.component';
+import { CartComponent } from './components/cart/cart.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { PasschangeComponent } from './components/passchange/passchange.componen
     routingComponents,
     SigninComponent,
     SignupComponent,
-    PasschangeComponent
+    PasschangeComponent,
+    CartComponent
   ],
   imports: [
     BrowserModule,
