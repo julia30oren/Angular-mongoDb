@@ -24,7 +24,7 @@ export class CartComponent implements OnInit {
     ///get total price
     this.data_service.total_price_from_service.subscribe(data => this.total_price = data);
     //
-    this.data_service.message_from_service.subscribe(data => this.message = data);
+    this.data_service.message_from_service.subscribe(data => { this.message = data; console.log(data) });
   }
 
   more(item_id) {
@@ -35,7 +35,7 @@ export class CartComponent implements OnInit {
   add_toDB(item_id) {
     this.main_service.saveProducte(item_id, JSON.parse(localStorage.getItem('268431621_u'))._id)
       .subscribe(data => {
-        console.log(data.message, data.item, data.amount);
+        console.log(data);
       });
   }
 

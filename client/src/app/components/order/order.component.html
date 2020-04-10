@@ -1,0 +1,233 @@
+<div id="mainDiv">
+    <div class="box">
+        <a href="/shop">Back to Shop</a>
+        <h1>Your Cart</h1>
+        <svg height="30" width="500">
+            <line x1="0" y1="0" x2="500" y2="0" style="stroke:rgb(255,0,0);stroke-width:2" />
+        </svg>
+        <p *ngIf="message === 'Cart is empty.'">{{message||json}}</p>
+        <div *ngIf="message !== 'Cart is empty.'">
+            <app-cart-to-order></app-cart-to-order>
+            <br/>
+            <h3>No changes can be done here.</h3>
+        </div>
+
+    </div>
+
+    <div class="box">
+        <br/>
+        <h1>Order</h1>
+        <svg height="30" width="500">
+            <line x1="0" y1="0" x2="500" y2="0" style="stroke:rgb(255,0,0);stroke-width:2" />
+        </svg>
+        <div class="details">
+            <h2>Shipping details</h2>
+            <svg height="30" width="100%">
+                <line x1="1%" y1="0" x2="98%" y2="0" style="stroke:rgba(56, 56, 56, 0.425);stroke-width:2" />
+            </svg>
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend" id="question">
+                    <div class="input-group-text" id="checkbox">
+                        <input type="checkbox" [(ngModel)]="useAddress" (click)="use_adress()">
+                    </div>
+                    <label>Would you like to use your address from the registration form?</label>
+                </div>
+
+                <div class="input-group  mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="_city">City <p class="star">*</p></span>
+                    </div>
+                    <select class="custom-select" [(ngModel)]="city" [ngClass]="{'border-red':city === ''}" id="inputGroupSelect01" placeholder="Choose...">
+                        <option value="Tel Aviv">Tel Aviv</option>
+                        <option value="Ashdod">Ashdod</option>
+                        <option value="Petah Toqwa">Petah Toqwa</option>
+                        <option value="Holon">Holon</option>
+                      </select>
+                </div>
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="_street">Street <p class="star">*</p></span>
+                    </div>
+                    <input [(ngModel)]="street" [ngClass]="{'border-red':street === ''}" type="text" class="form-control" aria-describedby="_street">
+                </div>
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="_house">House <p class="star">*</p></span>
+                    </div>
+                    <input [(ngModel)]="house" [ngClass]="{'border-red':house === ''}" type="text" class="form-control" aria-describedby="_house">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="_apartments">Apartments <p class="star">*</p></span>
+                    </div>
+                    <input [(ngModel)]="apartments" [ngClass]="{'border-red':apartments === ''}" type="text" class="form-control" aria-describedby="_apartments">
+                </div>
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="_phone_num">Phone Number <p class="star">*</p></span>
+                    </div>
+                    <input [(ngModel)]="phone_num" [ngClass]="{'border-red':phone_num === null}" type="text" class="form-control" aria-describedby="_phone_num">
+                </div>
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="_phone_num">Shipping date <p class="star">*</p></span>
+                    </div>
+                    <input [(ngModel)]="shipping_date" [ngClass]="{'border-red':phone_num === null}" type="date" class="form-control" aria-describedby="_phone_num">
+                </div>
+
+            </div>
+        </div>
+        <div class="details">
+            <h2>Credit card</h2>
+            <svg height="30" width="100%">
+                <line x1="1%" y1="0" x2="98%" y2="0" style="stroke:rgba(56, 56, 56, 0.425);stroke-width:2" />
+            </svg>
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="_card_number">Card number <p class="star">*</p></span>
+                </div>
+                <input [(ngModel)]="card_number" maxlength="9" [ngClass]="{'border-red':card_number === null}" type="number" class="form-control" aria-describedby="_card_number">
+            </div>
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="_expiration_">Expiration date <p class="star">*</p></span>
+                </div>
+                <input [(ngModel)]="expiration_month" [ngClass]="{'border-red':expiration_month === null}" min="1" max="12" type="number" class="form-control" aria-describedby="_expiration_month">
+                <input [(ngModel)]="expiration_year" [ngClass]="{'border-red':expiration_year === null}" min="2020" max="2030" type="number" class="form-control" aria-describedby="_expiration_year">
+            </div>
+        </div>
+
+        <div class="details">
+            <h2>Leave a comment</h2>
+            <svg height="30" width="100%">
+                <line x1="1%" y1="0" x2="98%" y2="0" style="stroke:rgba(56, 56, 56, 0.425);stroke-width:2" />
+            </svg>
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="_comment">Comment </span>
+                </div>
+                <input [(ngModel)]="comment" type="text" class="form-control" aria-describedby="_comment">
+            </div>
+            <!-- warning -->
+            <div *ngIf="warning_message" class="alert alert-danger" role="alert">
+                <p>{{message}}</p>
+            </div>
+        </div>
+        <button (click)="finishOrder()" type="button" class="btn btn-light btn-block">Purchase</button>
+    </div>
+
+    <!-- <div id="warn-div" *ngIf="!userVar">
+        <h1 id="warn-message">You are not loged in!</h1>
+    </div> -->
+
+    <style>
+        #warn-div {
+            height: 100%;
+            width: 70%;
+            background-color: rgba(10, 10, 10, 0.5);
+            position: absolute;
+            z-index: 999;
+        }
+        
+        #warn-message {
+            margin-top: 15%;
+            color: red;
+            /* text-shadow: #e0e0e0 1px 1px 0; */
+            text-shadow: 2px 8px 6px rgba(0, 0, 0, 0.2), 0px -5px 35px rgba(255, 255, 255, 0.3);
+        }
+        
+        #warn {
+            background-color: white;
+            border: black solid 1px;
+            height: 30%;
+            width: 40%;
+            align-items: center;
+            margin-left: 30%;
+            margin-top: 15%;
+        }
+        
+        #mainDiv {
+            display: flex;
+        }
+        
+        .box {
+            border: black solid 1px;
+            width: 780px;
+            height: 750px;
+            margin: 3%;
+            overflow: auto;
+        }
+        
+         ::-webkit-scrollbar {
+            display: none;
+        }
+        
+        h3 {
+            color: red;
+        }
+        
+        h2 {
+            text-align: right;
+            margin-right: 5%;
+        }
+        
+        .star {
+            color: red;
+        }
+        
+        .border-red {
+            border: solid red 1px;
+        }
+        
+        input,
+        select {
+            height: 60px;
+        }
+        
+        button {
+            background-color: rgba(182, 193, 201, 0.582);
+            height: 50px;
+            margin: 5%;
+            width: 90%;
+        }
+        
+        .input-form {
+            margin: 5%;
+            padding: 5%;
+        }
+        
+        .input-group-prepend {
+            width: 20%;
+        }
+        
+        #back_b {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .input-group-text {
+            width: 100%;
+        }
+        
+        .details {
+            width: 90%;
+            margin-left: 5%;
+        }
+        
+        #checkbox {
+            height: 50px;
+            width: 50px;
+            margin-right: 1%;
+        }
+        
+        #question {
+            width: 300px;
+            margin-bottom: 3%;
+        }
+    </style>

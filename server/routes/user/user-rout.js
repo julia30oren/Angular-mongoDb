@@ -30,6 +30,14 @@ router.get('/cart/:id', getUsersById, async(req, res) => {
     }
 });
 
+router.get('/address/:id', getUsersById, async(req, res) => {
+    try {
+        res.send(res.thisUser.adress);
+    } catch (error) {
+        res.status(400).json({ message: ` We have an error with users data : ${err.message}` })
+    }
+});
+
 router.post('/new-user', async(req, res) => {
     // console.log(req.body);
     const newUser = new UsersSchema({

@@ -14,11 +14,13 @@
             <app-passchange></app-passchange>
         </div>
 
-        <p *ngIf="user_name">hi, {{ user_name }}</p>
-        <p *ngIf="user_name">z.dkvcc s/l fkjjalfj knfkethrklerkn lrk fjjeqkkthqekr nekjnfn ;jfe;krhe kkejfe heriughg heoij egrgjhuirkh weiejhjfwow eituhe tiqhef; fkjjalfj knfkethrklerkn lrk fjjeqkkthqekr nekjnfn ;jfe;krhe kkejfe heriughg heoij egrgjhuirkh weiejhjfwow eituhe
-            tiqhef;ii
-        </p>
-
+        <div *ngIf="user_name" id="welcom-message">
+            <p>Hello, {{ user_name }}</p>
+            <p>We are very glad to welcome you to our online store.</p>
+            <p>The convenience of our customers is the most important thing for us!</p>
+            <p>In your cart <mark *ngIf="numberOfItems>0">{{numberOfItems}}</mark><mark *ngIf="!numberOfItems">there is no</mark> items. Would you like to <a href="/shop" *ngIf="numberOfItems>0">continue the purchase</a><a href="/shop" *ngIf="!numberOfItems">start shoping</a>                ?</p>
+            <p>If you want to register under a different name, click "Sign Out" button.</p>
+        </div>
 
         <div>
             <ul class="navbar-nav">
@@ -61,5 +63,16 @@
         background-color: rgba(182, 193, 201, 0.582);
         width: 98%;
         margin: 1%;
+    }
+    
+    #welcom-message {
+        margin: 10%;
+    }
+    
+    mark {
+        background-color: white;
+        font-size: large;
+        font-family: Bookman, URW Bookman L, serif;
+        font-weight: bold;
     }
 </style>

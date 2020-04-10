@@ -22,12 +22,14 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.data_service.user_name_from_service.subscribe(data => {
       if (!data) {
-        this.userName = 'no user loged-in';
+        this.userName = 'Please, Sign In';
       } else {
         this.userName = 'Hi, ' + data;
         console.log('1')
       }
     });
+    this.main_service.getUser_cart(JSON.parse(localStorage.getItem('268431621_u'))._id)
+      .subscribe(data => localStorage.setItem('w_345436583_l', JSON.stringify(data)))
     this.data_service.getTotalPrice();
   }
 

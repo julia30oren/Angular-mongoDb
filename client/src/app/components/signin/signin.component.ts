@@ -14,6 +14,7 @@ export class SigninComponent implements OnInit {
   public email: string;
   public password: string;
   public user: object;
+  private userIsSigned: any;
 
   constructor(
     private main_service: MainService,
@@ -40,11 +41,12 @@ export class SigninComponent implements OnInit {
       .subscribe(data => {
         console.log(data);
         if (!data) {
-          alert('user not found')
+          alert('User not found.')
         } else {
-          this.data_service.save_UserData(data.name);
-          localStorage.setItem('268431621_u', JSON.stringify({ name: data.name, _id: data._id }));
-          localStorage.setItem('w_345436583_l', JSON.stringify(data.whish_list));
+          this.userIsSigned = data;
+          this.data_service.save_UserData(this.userIsSigned.name);
+          localStorage.setItem('268431621_u', JSON.stringify({ name: this.userIsSigned.name, _id: this.userIsSigned._id }));
+          localStorage.setItem('w_345436583_l', JSON.stringify(this.userIsSigned.whish_list));
         }
       })
   }

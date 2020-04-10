@@ -14,7 +14,7 @@ export class DataService {
   private total_price = new BehaviorSubject<number>(0);
   public total_price_from_service = this.total_price.asObservable();
   private prices_array: Array<any> = [];
-  private message_to_user = new BehaviorSubject<string>(!JSON.parse(localStorage.getItem('w_345436583_l')) ? 'Cart is empty' : '');
+  private message_to_user = new BehaviorSubject<string>('Cart is empty');
   public message_from_service = this.message_to_user.asObservable();
 
   constructor() { }
@@ -23,6 +23,7 @@ export class DataService {
     this.user_name.next(name);
     this.getTotalPrice();
   }
+
 
   add_newItem_toCart(item: object) {
     this.cart.push(item);
@@ -59,6 +60,9 @@ export class DataService {
         this.getTotalPrice();
       }
     };
+    if (this.cart.length < 1) {
+      this.message_to_user.next('Cart is empty')
+    }
 
   }
 
@@ -76,6 +80,9 @@ export class DataService {
         this.prices_array.push(a);
       });
       let total = this.prices_array.reduce((a, b) => a + b, 0);
+      if (total > 0) {
+        this.message_to_user.next('')
+      }
       this.total_price.next(total);
     }
 

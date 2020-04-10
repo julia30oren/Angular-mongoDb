@@ -1,17 +1,18 @@
-# arkitekcher!
+# arkitekcher
 
 # bugs to fix:
--COCONAT MILK!
 -FISH IMAGE
+-orange img
+---disable dates
+---Clean the cart (do coll from main service)
 
 # to do:
--Clean the cart and delete one item X
--Go to Order
+---Admins page
 -Loader
--To Create Tooltips
--SEARCH (by pipe)
--Scroll Indicator
+-comersial
+-welcome words
 
 #backEnd:
--tocken
--bicript password (send to client and do check)
+---Logs
+---tocken
+---bicript password (send to client and do check)

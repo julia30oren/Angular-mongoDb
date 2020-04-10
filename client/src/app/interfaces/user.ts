@@ -10,6 +10,7 @@ export interface User_Interface {
     house: string,
     apartments: string,
     phone_num: number,
-
+    _id: string,
+    whish_list: Array<any>,
     message: string
 }

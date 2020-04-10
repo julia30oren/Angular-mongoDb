@@ -36,6 +36,11 @@ export class MainService {
     return getUsers_result;
   }
 
+  getUsers_address(id: number): Observable<User_Interface[]> {
+    const address_result = this.http.get<User_Interface[]>(`${this.Users_url}/address/${id}`);
+    return address_result;
+  }
+
   logIn(user: object): Observable<User_Interface[]> {
     const res = this.http.post<User_Interface[]>(`${this.Users_url}/user-login`, user);
     return res;

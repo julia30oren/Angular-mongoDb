@@ -1,10 +1,10 @@
 <div id="main">
-    <div id="content" [ngClass]="{xz: !open_cart, xz2: open_cart}">
+    <div id="content" [ngClass]="{xz: !open_cart || !open_orders, xz2: open_cart || open_orders}">
         <div class="search-group input-group">
             <input #search_text (keyup)="searchBYname(search_text.value)" type="text" placeholder="Search.." id="search-fild">
         </div>
         <div class="cards-group" *ngIf="search_result">
-            <div class="card" *ngFor="let item of search_result" (click)="eddToCart(item._id)" [ngClass]="{lessCards: open_cart}">
+            <div class="card" *ngFor="let item of search_result" (click)="eddToCart(item._id)" [ngClass]="{lessCards: open_cart || open_orders}">
                 <div class="">
                     <img src={{item.image}} class="card-img" alt="...">
                 </div>
@@ -15,7 +15,6 @@
                     <button class="adding" (click)="addToCart(item._id)">Add to Cart</button>
                 </div>
             </div>
-            <!-- <p>{{searc_item || json}}</p> -->
         </div>
 
         <ul class="nav justify-content-center">
@@ -37,7 +36,7 @@
         </ul>
 
         <div class="cards-group" *ngIf="grouped_by === null">
-            <div class="card" *ngFor="let item of productes_data_db" [ngClass]="{lessCards: open_cart}">
+            <div class="card" *ngFor="let item of productes_data_db" [ngClass]="{lessCards: open_cart || open_orders}">
                 <div class="">
                     <img src={{item.image}} class="card-img" alt="...">
                 </div>
@@ -51,7 +50,7 @@
         </div>
 
         <div class="cards-group" *ngIf="grouped_by !== null">
-            <div class="card" *ngFor="let item of grouped_by" (click)="eddToCart(item._id)" [ngClass]="{lessCards: open_cart}">
+            <div class="card" *ngFor="let item of grouped_by" (click)="eddToCart(item._id)" [ngClass]="{lessCards: open_cart || open_orders}">
                 <div class="">
                     <img src={{item.image}} class="card-img" alt="...">
                 </div>
@@ -65,10 +64,12 @@
         </div>
     </div>
 
-    <div class="extra">
-        <button *ngIf="!open_cart" class="nav-link" (click)="openCart()">My Cart</button>
-        <button *ngIf="open_cart" class="nav-link" (click)="openCart()">=></button>
+    <div *ngIf="!open_cart && !open_orders">
+        <button class="nav-link open-button" (click)="openCart()">My Cart</button>
+        <button class="nav-link open-button" (click)="openOrders()">My Orders</button>
     </div>
+    <button *ngIf="open_cart || open_orders" class="nav-link close-button" (click)="close()">=></button>
+
 </div>
 
 <div [ngClass]="{open: open_cart, close: !open_cart}">
@@ -81,6 +82,15 @@
     </div>
 </div>
 
+<div [ngClass]="{open: open_orders, close: !open_orders}">
+    <div *ngIf="message && open_orders">
+        <h3>{{message}}</h3>
+        <a href="/home"> Go LogIn</a>
+    </div>
+    <div *ngIf="open_orders && !message">
+        <app-user-orders></app-user-orders>
+    </div>
+</div>
 
 <style>
     /* cart */
@@ -141,10 +151,6 @@
         border: black solid 1px;
     }
     
-    .extra {
-        margin-top: 5%;
-    }
-    
     #main {
         display: flex;
     }
@@ -163,6 +169,18 @@
     
     button {
         border: none;
+    }
+    
+    .open-button {
+        margin-left: 1%;
+        margin-top: 10px;
+        width: 120px;
+    }
+    
+    .close-button {
+        position: absolute;
+        left: 42%;
+        top: 300px
     }
     
     #first_link {

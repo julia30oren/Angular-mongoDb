@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { routingComponents } from './app-routing.module';
@@ -12,6 +11,8 @@ import { SigninComponent } from './components/signin/signin.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { PasschangeComponent } from './components/passchange/passchange.component';
 import { CartComponent } from './components/cart/cart.component';
+import { CartToOrderComponent } from './components/cart-to-order/cart-to-order.component';
+import { UserOrdersComponent } from './components/user-orders/user-orders.component';
 
 @NgModule({
   declarations: [
@@ -22,8 +23,9 @@ import { CartComponent } from './components/cart/cart.component';
     SigninComponent,
     SignupComponent,
     PasschangeComponent,
-    CartComponent
-  ],
+    CartComponent,
+    CartToOrderComponent,
+    UserOrdersComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

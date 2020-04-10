@@ -14,6 +14,8 @@ export class ShopComponent implements OnInit {
   public grouped_by: Array<any> = null;
   public search_result: Array<any> = [];
   public open_cart: boolean = false;
+  public open_orders: boolean = false;
+  private save_resoult: any;
   public message: string = localStorage.getItem('268431621_u') ? '' : 'to shop, please, logIn';
 
   constructor(
@@ -26,15 +28,15 @@ export class ShopComponent implements OnInit {
     //geting productes from database
     this.main_service.getProductes_fromDB()
       .subscribe(data => { this.productes_data_db = data; });
-    console.log('2');
+    // console.log('2');
 
     if (JSON.parse(localStorage.getItem('268431621_u'))) {
       this.main_service.getUser_cart(JSON.parse(localStorage.getItem('268431621_u'))._id)
         .subscribe(data => {
           console.log(data);
-          console.log('3');
+          // console.log('3');
           localStorage.setItem('w_345436583_l', JSON.stringify(data));
-          console.log('4');
+          // console.log('4');
         })
     }
 
@@ -63,11 +65,12 @@ export class ShopComponent implements OnInit {
     if (localStorage.getItem('268431621_u')) {
       this.main_service.saveProducte(item_id, JSON.parse(localStorage.getItem('268431621_u'))._id)
         .subscribe(data => {
-          if (data.amount === 1) {
-            console.log('data.amount', data.amount);
-            this.data_service.add_newItem_toCart(data.item);
+          this.save_resoult = data
+          if (this.save_resoult.amount === 1) {
+            // console.log('data.amount', this.save_resoult.amount);
+            this.data_service.add_newItem_toCart(this.save_resoult.item);
           } else {
-            console.log('data.amount /////', data.amount);
+            // console.log('data.amount /////', this.save_resoult.amount);
             this.more(item_id);
           }
         });
@@ -82,8 +85,16 @@ export class ShopComponent implements OnInit {
   }
 
   openCart() {
-    this.open_cart = !this.open_cart;
-    console.log('4 open/close');
+    this.open_cart = true;
+  }
+
+  openOrders() {
+    this.open_orders = true;
+  }
+
+  close() {
+    this.open_cart = false;
+    this.open_orders = false;
   }
 
 }
