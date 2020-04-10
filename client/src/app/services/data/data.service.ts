@@ -6,7 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class DataService {
 
-  private cart = JSON.parse(localStorage.getItem('w_345436583_l'));
+  private cart = JSON.parse(localStorage.getItem('w_345436583_l')) ? JSON.parse(localStorage.getItem('w_345436583_l')) : [];
   private user_name = new BehaviorSubject<string>(JSON.parse(localStorage.getItem('268431621_u')) ? JSON.parse(localStorage.getItem('268431621_u')).name : '');
   public user_name_from_service = this.user_name.asObservable();
   private user_CART = new BehaviorSubject<Array<any>>(JSON.parse(localStorage.getItem('w_345436583_l')) ? JSON.parse(localStorage.getItem('w_345436583_l')) : []);
@@ -16,8 +16,19 @@ export class DataService {
   private prices_array: Array<any> = [];
   private message_to_user = new BehaviorSubject<string>('Cart is empty');
   public message_from_service = this.message_to_user.asObservable();
+  private signed_as_admin = new BehaviorSubject<boolean>(JSON.parse(localStorage.getItem('2684_a_1621_')) ? true : false);
+  public admin_from_service = this.signed_as_admin.asObservable();
 
   constructor() { }
+
+  signAdmin(or: boolean) {
+    console.log(or)
+    if (or === true) {
+      this.signed_as_admin.next(true);
+    } else {
+      this.signed_as_admin.next(false);
+    }
+  }
 
   save_UserData(name: string) {
     this.user_name.next(name);

@@ -44,9 +44,16 @@ export class SigninComponent implements OnInit {
           alert('User not found.')
         } else {
           this.userIsSigned = data;
-          this.data_service.save_UserData(this.userIsSigned.name);
-          localStorage.setItem('268431621_u', JSON.stringify({ name: this.userIsSigned.name, _id: this.userIsSigned._id }));
-          localStorage.setItem('w_345436583_l', JSON.stringify(this.userIsSigned.whish_list));
+          if (this.userIsSigned.name !== 'Admin') {
+            this.data_service.save_UserData(this.userIsSigned.name);
+            this.data_service.signAdmin(false);
+            localStorage.setItem('268431621_u', JSON.stringify({ name: this.userIsSigned.name, _id: this.userIsSigned._id }));
+            localStorage.setItem('w_345436583_l', JSON.stringify(this.userIsSigned.whish_list));
+          } else if (this.userIsSigned.name === 'Admin') {
+            localStorage.setItem('2684_a_1621_', JSON.stringify({ name: this.userIsSigned.name }));
+            console.log('admin');
+            this.data_service.signAdmin(true);
+          }
         }
       })
   }

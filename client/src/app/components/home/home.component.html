@@ -1,7 +1,5 @@
-<div id="main-home">
-
+<div id="forUser" *ngIf="!admin">
     <div class="boxes">
-
         <div id="do-logi-IN" *ngIf="ection_to_do ==='login' && user_name === ''">
             <app-signin></app-signin>
         </div>
@@ -28,13 +26,10 @@
                     <button class="nav-link btn btn-light btn-block" (click)="ection_to_do = 'login'" *ngIf="ection_to_do !== 'login'"> SignIn </button>
                 </li>
                 <li class="nav-item">
-                    <button class="nav-link btn btn-light btn-block" (click)="ection_to_do = 'signup'" *ngIf="!user_name"> SignUp </button>
+                    <button class="nav-link btn btn-light btn-block" (click)="ection_to_do = 'signup'" *ngIf="!user_name && !admin"> SignUp </button>
                 </li>
                 <li class="nav-item">
                     <button class="nav-link btn btn-light btn-block" (click)="ection_to_do = 'password-change'" *ngIf="user_name"> Change Password? </button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link btn btn-light btn-block" (click)="do_signout()" *ngIf="user_name"> Sign Out </button>
                 </li>
             </ul>
         </div>
@@ -44,8 +39,12 @@
     </div>
 </div>
 
+<div id="forAdmin" *ngIf="admin">
+    <p>Welcome, Admin!</p>
+</div>
+
 <style>
-    #main-home {
+    #forUser {
         display: flex;
     }
     

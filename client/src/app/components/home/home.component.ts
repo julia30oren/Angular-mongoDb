@@ -12,6 +12,7 @@ export class HomeComponent implements OnInit {
   public user_name: string;
   public ection_to_do: string = 'login';
   public numberOfItems: number;
+  public admin: boolean;
 
   constructor(
     private main_service: MainService,
@@ -20,6 +21,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.data_service.user_name_from_service.subscribe(data => { this.user_name = data; });
+    this.data_service.admin_from_service.subscribe(data => { if (data) { this.admin = true } else this.admin = false })
     if (JSON.parse(localStorage.getItem('w_345436583_l'))) {
       const cart = JSON.parse(localStorage.getItem('w_345436583_l'));
       for (let i = 0; i < cart.length; i++) {
@@ -31,9 +33,4 @@ export class HomeComponent implements OnInit {
 
   }
 
-  do_signout() {
-    this.ection_to_do = 'login';
-    this.data_service.save_UserData('');
-    localStorage.clear();
-  }
 }

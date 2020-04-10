@@ -13,6 +13,8 @@ import { PasschangeComponent } from './components/passchange/passchange.componen
 import { CartComponent } from './components/cart/cart.component';
 import { CartToOrderComponent } from './components/cart-to-order/cart-to-order.component';
 import { UserOrdersComponent } from './components/user-orders/user-orders.component';
+import { AdminOrdersComponent } from './components/admin-orders/admin-orders.component';
+import { AdminShopComponent } from './components/admin-shop/admin-shop.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { UserOrdersComponent } from './components/user-orders/user-orders.compon
     PasschangeComponent,
     CartComponent,
     CartToOrderComponent,
-    UserOrdersComponent],
+    UserOrdersComponent,
+    AdminOrdersComponent,
+    AdminShopComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

@@ -3,7 +3,7 @@ const router = express.Router();
 const UsersSchema = require('./user-model');
 const ProductSchema = require('../products/products-model');
 const mongoose = require('mongoose');
-
+const pool = require('../../DB/pool');
 
 router.get('/', async(req, res) => {
     try {
@@ -64,16 +64,24 @@ router.post('/new-user', async(req, res) => {
 
 router.post('/user-login', async(req, res) => {
     const { email, password } = req.body;
-    try {
-        const login = await UsersSchema.find({ "email": email, "password": password });
-        if (!login[0]) {
-            res.json({ message: 'No user found' });
-        } else {
-            // console.log({ name: login[0].name, _id: login[0]._id, whish_list: login[0].whish_list });
-            res.json({ name: login[0].name, _id: login[0]._id, whish_list: login[0].whish_list });
+    if (email === 'admin') {
+        const result = await pool.execute(adminCheck_Query(), [email, password]);
+        const exist = result[0];
+        if (exist) {
+            res.json({ message: 'admin signed in', name: 'Admin' })
         }
-    } catch (err) {
-        return res.status(500).send({ message: err.message })
+    } else {
+        try {
+            const login = await UsersSchema.find({ "email": email, "password": password });
+            if (!login[0]) {
+                res.json({ message: 'No user found' });
+            } else {
+                // console.log({ name: login[0].name, _id: login[0]._id, whish_list: login[0].whish_list });
+                res.json({ name: login[0].name, _id: login[0]._id, whish_list: login[0].whish_list });
+            }
+        } catch (err) {
+            return res.status(500).send({ message: err.message })
+        }
     }
 });
 
@@ -215,6 +223,12 @@ async function getUsersById(req, res, next) {
     }
     res.thisUser = thisUser;
     next();
+}
+
+function adminCheck_Query() {
+    return `SELECT * FROM shop_p.admins
+            WHERE name_admin = ?
+            AND pessword_admin= ?;`
 }
 
 module.exports = router;
