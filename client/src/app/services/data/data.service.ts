@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { MainService } from '../main.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
-
+  ///for users:
   private cart = JSON.parse(localStorage.getItem('w_345436583_l')) ? JSON.parse(localStorage.getItem('w_345436583_l')) : [];
   private user_name = new BehaviorSubject<string>(JSON.parse(localStorage.getItem('268431621_u')) ? JSON.parse(localStorage.getItem('268431621_u')).name : '');
   public user_name_from_service = this.user_name.asObservable();
@@ -16,11 +17,24 @@ export class DataService {
   private prices_array: Array<any> = [];
   private message_to_user = new BehaviorSubject<string>('Cart is empty');
   public message_from_service = this.message_to_user.asObservable();
+  //for admin:
+  private all_productes_list = new BehaviorSubject<Array<any>>([]);
+  public all_productes_list_from_service = this.all_productes_list.asObservable();
   private signed_as_admin = new BehaviorSubject<boolean>(JSON.parse(localStorage.getItem('2684_a_1621_')) ? true : false);
   public admin_from_service = this.signed_as_admin.asObservable();
 
-  constructor() { }
+  constructor(
+    private main_service: MainService
+  ) { }
 
+  get_productes_fromDB() {
+    this.main_service.getProductes_fromDB()
+      .subscribe(data => {
+        this.all_productes_list.next(data);
+      })
+  }
+
+  //for admin:
   signAdmin(or: boolean) {
     console.log(or)
     if (or === true) {
@@ -29,7 +43,11 @@ export class DataService {
       this.signed_as_admin.next(false);
     }
   }
+  saveChanges(new_list: Array<any>) {
+    this.all_productes_list.next(new_list)
+  }
 
+  ///for users:
   save_UserData(name: string) {
     this.user_name.next(name);
     this.getTotalPrice();

@@ -40,7 +40,20 @@
 </div>
 
 <div id="forAdmin" *ngIf="admin">
-    <p>Welcome, Admin!</p>
+    <h1>Welcome! </h1>
+    <h4>You are registered as the
+        <font size="5" color="red" face="Arial">administrator</font> of this site.</h4>
+    <h4> As a site administrator, two tabs are available to you: "Orders" and "Products". </h4>
+    <br>
+    <p>
+        <font size="5" color="red" face="Arial">*</font>Orders</p>
+    <p>Here you can view the list of orders.</p>
+    <br>
+    <p>
+        <font size="5" color="red" face="Arial">*</font>Products</p>
+    <p>Here you can add or modify existing products.</p>
+    <br>
+    <h4>To exit the admin mode, press "Sign Out"</h4>
 </div>
 
 <style>
@@ -73,5 +86,15 @@
         font-size: large;
         font-family: Bookman, URW Bookman L, serif;
         font-weight: bold;
+    }
+    
+    #forAdmin {
+        border: black solid 1px;
+        /* height: 500px; */
+        width: 60%;
+        margin-top: 5%;
+        margin-left: 20%;
+        margin-bottom: 5%;
+        padding: 1%;
     }
 </style>

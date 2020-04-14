@@ -5,15 +5,6 @@ const ProductSchema = require('../products/products-model');
 const mongoose = require('mongoose');
 const pool = require('../../DB/pool');
 
-router.get('/', async(req, res) => {
-    try {
-        const allUsers = await UsersSchema.find()
-        res.send(allUsers)
-    } catch (err) {
-        res.status(500).json({ message: ` We have an error on server : ${err.message}` })
-    }
-});
-
 router.get('/:id', getUsersById, async(req, res) => {
     try {
         res.send({ name: res.thisUser.name, _id: res.thisUser._id, whish_list: res.thisUser.whish_list })

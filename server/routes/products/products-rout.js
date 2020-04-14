@@ -28,34 +28,6 @@ router.get('/category/:name', getByName, async(req, res) => {
     }
 });
 
-router.post('/new-product', async(req, res) => {
-    const newProduct = new ProductSchema({
-        name: req.body.name,
-        category: req.body.category,
-        price: req.body.price,
-        image: req.body.image
-    });
-
-    try {
-        const itemToSave = await newProduct.save();
-        res.status(201).json(itemToSave);
-    } catch (err) {
-        res.status(400).json({ message: ` We have an error with data : ${err.message}` })
-    }
-});
-
-router.delete('/:id', getById, async(req, res) => {
-    try {
-        await res.thisProduct.remove();
-        res.json({ message: `"${res.thisProduct.name}" item was deleted` })
-    } catch (error) {
-        res.status(400).json({ message: ` We have an error with delete : ${err.message}` })
-    }
-})
-
-
-
-
 
 async function getById(req, res, next) {
     let thisProduct;
@@ -85,8 +57,5 @@ async function getByName(req, res, next) {
     res.thisGroupe = thisGroupe;
     next();
 }
-
-
-
 
 module.exports = router;

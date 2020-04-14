@@ -4,6 +4,7 @@
 -FISH IMAGE
 -orange img
 ---disable dates
+--download images
 ---Clean the cart (do coll from main service)
 
 # to do:
@@ -16,3 +17,8 @@
 ---Logs
 ---tocken
 ---bicript password (send to client and do check)
+
+
+
+
+

@@ -14,6 +14,16 @@ const ProductSchema = new Schema({
         type: Number,
         required: true
     },
+    for_quantity: {
+        type: Number,
+        required: true,
+        default: 1
+    },
+    for_measure: {
+        type: String,
+        required: true,
+        default: ''
+    },
     image: {
         type: String,
         required: true,

@@ -12,7 +12,7 @@
 <!-- header -->
 <div class="header" id="myHeader" [class.sticky]="sticky" #stickyMenu>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light">
         <a class="navbar-brand" href="/" id="stor-name">
             <img src="https://dcassetcdn.com/design_img/1698888/436878/436878_9312312_1698888_d128d5a4_image.jpg" alt="sorry"> EasyBay
         </a>
@@ -22,8 +22,8 @@
 
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav" *ngIf=" userName!=='Please, Sign In'">
-                <li class="nav-item active">
-                    <button><a class="nav-link" href="/home" *ngIf="!loged_as_admin"> Home <span class="sr-only">(current)</span></a></button>
+                <li class="nav-item active" *ngIf="!loged_as_admin">
+                    <button><a class="nav-link" href="/home"> Home <span class="sr-only">(current)</span></a></button>
                 </li>
                 <li class="nav-item active" *ngIf="!loged_as_admin">
                     <button><a class="nav-link" href="/shop"> Shop <span class="sr-only">(current)</span></a></button>
@@ -32,7 +32,7 @@
                     <button><a class="nav-link" href="/admin/orders"> Orders <span class="sr-only">(current)</span></a></button>
                 </li>
                 <li class="nav-item active" *ngIf="loged_as_admin">
-                    <button><a class="nav-link" href="/admin/shop"> Productes <span class="sr-only">(current)</span></a></button>
+                    <button><a class="nav-link" href="/admin/shop"> Products <span class="sr-only">(current)</span></a></button>
                 </li>
                 <li class="nav-item active">
                     <button (click)="do_signout()"><a class="nav-link" href="/home"> Sign Out <span class="sr-only">(current)</span></a></button>
@@ -90,6 +90,10 @@
         margin-left: 15%;
     }
     /* NAVBAR */
+    
+    .navbar {
+        background-color: white;
+    }
     
     #navbarNav {
         margin-left: 5%;
