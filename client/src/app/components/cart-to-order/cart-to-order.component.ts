@@ -19,7 +19,11 @@ export class CartToOrderComponent implements OnInit {
 
   ngOnInit() {
     ///get users cart
-    this.data_service.user_CART_from_service.subscribe(data => this.my_cart = data);
+    this.data_service.user_CART_from_service
+      .subscribe(data => {
+        this.my_cart = data;
+        console.log(this.my_cart);
+      });
     ///get total price
     this.data_service.total_price_from_service.subscribe(data => this.total_price = data);
   }

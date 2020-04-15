@@ -1,24 +1,16 @@
 # arkitekcher
 
 # bugs to fix:
--FISH IMAGE
--orange img
 ---disable dates
---download images
----Clean the cart (do coll from main service)
+--download images or -alt img
 
 # to do:
----Admins page
+-do \ un do button
 -Loader
 -comersial
 -welcome words
 
-#backEnd:
+# backEnd:
 ---Logs
 ---tocken
 ---bicript password (send to client and do check)
-
-
-
-
-

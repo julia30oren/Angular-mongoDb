@@ -69,6 +69,12 @@ const UserSchema = new Schema({
         price: {
             type: Number
         },
+        for_quantity: {
+            type: Number
+        },
+        for_measure: {
+            type: String
+        },
         amount: {
             type: Number,
             default: 1

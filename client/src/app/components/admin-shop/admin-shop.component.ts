@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { MainService } from 'src/app/services/main.service';
 import { DataService } from 'src/app/services/data/data.service';
 import { AdminService } from 'src/app/services/admin/admin.service';
 
@@ -24,7 +23,6 @@ export class AdminShopComponent implements OnInit {
   public message: string;
   public response: any;
   constructor(
-    private main_service: MainService,
     private admin_service: AdminService,
     private data_service: DataService
   ) { }
@@ -71,7 +69,6 @@ export class AdminShopComponent implements OnInit {
         this.measure = this.chosenProd.for_measure;
         this.image = this.chosenProd.image;
       }
-      // console.log(this.chosenProd);
     }
 
   }
@@ -93,10 +90,8 @@ export class AdminShopComponent implements OnInit {
                 };
                 if (id) {
                   this.saveChanged_toDB(id, product);
-                  this.saveChanges_toService(id);
                 } else {
-                  this.saveNew(product);
-                  window.location.reload();
+                  this.saveNew_inDB(product);
                 }
               } else this.message = '"Image" was not filled!';
             } else this.message = '"Product Quantity and Measure" were not chosen';
@@ -110,15 +105,12 @@ export class AdminShopComponent implements OnInit {
     this.admin_service.editProduct_DB(id, product)
       .subscribe(data => {
         if (data) {
-          console.log(data);
-          this.response = data;
-          alert(this.response);
-          this.data_service.get_productes_fromDB();
+          this.saveChanges_toArray(id);
         } else alert('Something went wrong.')
       });
   }
 
-  saveChanges_toService(id) {
+  saveChanges_toArray(id) {
     this.productes_data_db.forEach(element => {
       if (element._id === id) {
         element.name = this.product_name;
@@ -127,22 +119,30 @@ export class AdminShopComponent implements OnInit {
         element.for_quantity = this.quantity;
         element.for_measure = this.measure;
         element.image = this.image;
-        this.data_service.saveChanges(this.productes_data_db);
+        this.filtered_products = this.productes_data_db;
       }
     });
 
   }
 
-  saveNew(product: object) {
+  saveNew_inDB(product: object) {
     this.admin_service.createNew_DB(product)
       .subscribe(data => {
         if (data) {
           console.log(data);
           this.response = data;
-          alert(this.response);
-          this.data_service.get_productes_fromDB();
+          if (this.response._id) {
+            this.saveNew_toArray(this.response._id, product);
+          }
         } else alert('Something went wrong.')
       });
+  }
+
+  saveNew_toArray(new_id: number, new_product: any) {
+    new_product._id = new_id;
+    console.log(new_product);
+    this.productes_data_db.push(new_product);
+    this.filtered_products = this.productes_data_db;
   }
 
   openOREclose() {

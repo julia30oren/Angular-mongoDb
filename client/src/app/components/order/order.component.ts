@@ -23,6 +23,7 @@ export class OrderComponent implements OnInit {
   private card_number: number;
   private expiration_month: number;
   private expiration_year: number;
+  private finale_price: number;
   public comment: string;
   public warning_message: boolean = false;
   public message: any;
@@ -43,7 +44,15 @@ export class OrderComponent implements OnInit {
 
         if (localStorage.getItem('w_345436583_l') === '[]') {
           this.message = 'Cart is empty.'
+        } else {
+          ///get total price
+          this.data_service.getTotalPrice();
+          this.data_service.total_price_from_service.subscribe(data => {
+            console.log(data);
+            this.finale_price = data;
+          })
         }
+
       }
       else this.userVar = false;
     } else this.userVar = false;
@@ -92,16 +101,14 @@ export class OrderComponent implements OnInit {
                       },
                       card_number: this.card_number,
                       exp_date: `${this.expiration_month}/${this.expiration_year}`,
+                      finale_price: this.finale_price.toFixed(2),
                       comment: this.comment || 'no comments',
                       shipping_date: this.shipping_date
                     }
                     console.log(Order);
                     this.orders_service.placeOrder_mySql(Order, JSON.parse(localStorage.getItem('268431621_u'))._id).subscribe(data => {
                       if (data) {
-                        this.message = data;
-                        this.data_service.save([]);
-                        this.data_service.getTotalPrice();
-                        this.message = 'Cart is empty.';
+                        this.data_service.clean_cart();
                         ///message
                         alert('YOUR ORDER HAS BEEN PLACED! Thanks for shopping with us online!');
                         //redirect

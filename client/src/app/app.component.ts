@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { DataService } from './services/data/data.service';
 import { MainService } from './services/main.service';
-// import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -43,7 +42,7 @@ export class AppComponent implements OnInit {
     if (JSON.parse(localStorage.getItem('268431621_u'))) {
       this.main_service.getUser_cart(JSON.parse(localStorage.getItem('268431621_u'))._id)
         .subscribe(data => localStorage.setItem('w_345436583_l', JSON.stringify(data)))
-      this.data_service.getTotalPrice();
+      // this.data_service.getTotalPrice();
     }
 
   }

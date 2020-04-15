@@ -1,15 +1,14 @@
 export interface Order_Interface {
+    order_id: number,
+    order_date: Date,
     user_id: number,
+    user_name: string,
+    __order__: object,
     address: object,
-    card_number: number,
-    exp_date: string,
-    comment: string,
+    card_N: number,
+    user_comment: string,
+    shipping_date: string,
+    done: boolean,
 
     message: string
 }
-
-    // city:string,
-    // street: this.street,
-    // house: this.house,
-    // apartments: this.apartments,
-    // phone_num: this.phone_num

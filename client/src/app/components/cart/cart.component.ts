@@ -13,18 +13,29 @@ export class CartComponent implements OnInit {
     private data_service: DataService,
     private main_service: MainService
   ) { }
-  public my_cart: Array<any>;
+  public my_cart: Array<any> = [];
   public total_price: number;
   public message: string;
 
   ngOnInit() {
-    console.log('5');
+    console.log('open cart');
     ///get users cart
-    this.data_service.user_CART_from_service.subscribe(data => this.my_cart = data);
+    this.data_service.user_CART_from_service.subscribe(data => {
+      console.log(data);
+      this.my_cart = data;
+      console.log(this.my_cart);
+    });
     ///get total price
-    this.data_service.total_price_from_service.subscribe(data => this.total_price = data);
+    this.data_service.getTotalPrice();
+    this.data_service.total_price_from_service.subscribe(data => {
+      console.log(data);
+      this.total_price = data;
+    })
     //
-    this.data_service.message_from_service.subscribe(data => { this.message = data; console.log(data) });
+    this.data_service.message_from_service.subscribe(data => {
+      console.log(data);
+      this.message = data;
+    });
   }
 
   more(item_id) {
@@ -69,15 +80,12 @@ export class CartComponent implements OnInit {
 
   cleaneCart() {
     ///DB side cleanCart_DB
+    this.my_cart = [];
+    this.data_service.clean_cart();
     this.main_service.cleanCart_DB(JSON.parse(localStorage.getItem('268431621_u'))._id)
       .subscribe(data => {
         console.log(data);
         ///client side
-        this.data_service.clean_cart();
       });
-
-
-
   }
-
 }

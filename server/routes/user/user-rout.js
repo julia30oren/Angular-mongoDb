@@ -102,15 +102,18 @@ router.post('/cart-add', async(req, res) => {
         } else {
             /// if  NOT EXIST
             const searchItem = await ProductSchema.findById(item_id);
+            // console.log(searchItem);
             const newItem = {
                 item_id: searchItem._id,
                 image: searchItem.image,
                 name: searchItem.name,
+                for_quantity: searchItem.for_quantity,
+                for_measure: searchItem.for_measure,
                 category: searchItem.category,
                 price: searchItem.price,
                 amount: 1
             };
-            // console.log(newItem)
+            // console.log(newItem);
             const addItem_toCart = await UsersSchema.updateOne({ "_id": user_id }, { $push: { "whish_list": newItem } });
             // console.log(addItem_toCart)
             res.json({ message: `Item was addet to cart successfully.`, item: newItem, amount: 1 });

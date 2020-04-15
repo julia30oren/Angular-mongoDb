@@ -1,1 +1,113 @@
-<p>admin-orders works!</p>
+<div id="table">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Order</th>
+                <th scope="col">Order Date</th>
+                <th scope="col">User Name</th>
+                <th scope="col">Address</th>
+                <th scope="col">User Comment</th>
+                <th scope="col">Shipping Date</th>
+                <th scope="col">Done/Not Done</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of orders_fromDB" class="tr-hov">
+                <td>
+                    <button (click)="extraInfo(item.__order__, item.finale_price)">Get Order Details</button>
+                    <!-- <p *ngFor="let product of item.__order__">{{product.name | json}}</p> -->
+                </td>
+                <td>{{item.order_date | date }}</td>
+                <td>
+                    <p [ngClass]="{is_done: item.done}">{{item.user_name}}</p>
+                </td>
+                <td>{{item.order_address.city}}, {{item.order_address.street}} {{item.order_address.house}}/{{item.order_address.apartments}}
+                    <br>tel.: {{item.order_address.phone_num}}
+                </td>
+                <td *ngIf="item.user_comment!=='no comments'">"{{item.user_comment}}"</td>
+                <td *ngIf="item.user_comment==='no comments'">-</td>
+
+                <td>{{item.shipping_date | date}}</td>
+                <td *ngIf="!item.done"><button class="buttone-done" (click)="changeState(item.order_id)">Done</button></td>
+                <td *ngIf="item.done"><button class="buttone-not-done" (click)="changeState(item.order_id)">Not Done</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div id="extra" *ngIf="extra[0]">
+    <div id="orders">
+        <button (click)="extraClean()" id="close-button">X</button>
+        <div id="inner">
+            <div *ngFor="let item of extra">
+                <p *ngIf="item.name">{{item.name}} *{{item.amount}} </p>
+                <p *ngIf="item.name">Price: {{(item.price * item.amount).toFixed(2)}}$</p>
+                <hr>
+            </div>
+            <b>Total price: {{price}}$</b>
+        </div>
+    </div>
+</div>
+
+<style>
+    #table {
+        min-height: 1300px;
+    }
+    
+    .id-done {
+        text-decoration: line-through solid rgb(68, 68, 68);
+    }
+    
+    .tr-hov:hover {
+        background-color: rgba(128, 128, 128, 0.26);
+    }
+    
+    button {
+        border: none;
+    }
+    
+    .buttone-done {
+        background-color: rgba(25, 95, 34, 0.3);
+    }
+    
+    .buttone-not-done {
+        background-color: rgba(85, 32, 121, 0.3);
+    }
+    
+    button:hover {
+        background-color: rgba(128, 128, 128, 0.4);
+        border: solid 1px rgba(59, 59, 59, 0.5);
+    }
+    
+    #extra {
+        position: absolute;
+        position: fixed;
+        top: 0;
+        right: 0;
+        height: 100%;
+        width: 100%;
+        z-index: 2;
+        background-color: rgba(128, 128, 128, 0.253);
+    }
+    
+    #orders {
+        position: absolute;
+        position: fixed;
+        top: 25%;
+        right: 25%;
+        width: 50%;
+        z-index: 3;
+        background-color: rgb(255, 255, 255);
+        border: black 1px solid;
+    }
+    
+    #inner {
+        padding: 1.5%;
+    }
+    
+    #close-button {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+    }
+</style>

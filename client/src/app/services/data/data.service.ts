@@ -7,15 +7,15 @@ import { MainService } from '../main.service';
 })
 export class DataService {
   ///for users:
-  private cart = JSON.parse(localStorage.getItem('w_345436583_l')) ? JSON.parse(localStorage.getItem('w_345436583_l')) : [];
-  private user_name = new BehaviorSubject<string>(JSON.parse(localStorage.getItem('268431621_u')) ? JSON.parse(localStorage.getItem('268431621_u')).name : '');
+  private cart = localStorage.getItem('w_345436583_l') ? JSON.parse(localStorage.getItem('w_345436583_l')) : [];
+  private user_name = new BehaviorSubject<string>(localStorage.getItem('268431621_u') ? JSON.parse(localStorage.getItem('268431621_u')).name : '');
   public user_name_from_service = this.user_name.asObservable();
   private user_CART = new BehaviorSubject<Array<any>>(JSON.parse(localStorage.getItem('w_345436583_l')) ? JSON.parse(localStorage.getItem('w_345436583_l')) : []);
   public user_CART_from_service = this.user_CART.asObservable();
   private total_price = new BehaviorSubject<number>(0);
   public total_price_from_service = this.total_price.asObservable();
   private prices_array: Array<any> = [];
-  private message_to_user = new BehaviorSubject<string>('Cart is empty');
+  private message_to_user = new BehaviorSubject<string>(JSON.parse(localStorage.getItem('w_345436583_l')) ? '' : 'Cart is empty');
   public message_from_service = this.message_to_user.asObservable();
   //for admin:
   private all_productes_list = new BehaviorSubject<Array<any>>([]);
@@ -96,7 +96,6 @@ export class DataService {
   }
 
   save(cart: Array<any>) {
-    console.log('save')
     localStorage.setItem('w_345436583_l', JSON.stringify(cart));
     this.user_CART.next(cart);
   }
@@ -110,8 +109,8 @@ export class DataService {
       });
       let total = this.prices_array.reduce((a, b) => a + b, 0);
       if (total > 0) {
-        this.message_to_user.next('')
-      }
+        this.message_to_user.next('');
+      } else this.message_to_user.next('Cart is empty');
       this.total_price.next(total);
     }
 
@@ -119,6 +118,7 @@ export class DataService {
 
   clean_cart() {
     this.save([]);
+    this.cart = [];
     this.total_price.next(0);
     this.message_to_user.next('Cart is empty');
   }

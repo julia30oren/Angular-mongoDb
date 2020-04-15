@@ -1,17 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const UsersSchema = require('./user/user-model');
 const ProductSchema = require('./products/products-model');
-
 /// MySql
 const pool = require('../DB/pool');
 
 
-///all users
-router.get('/', async(req, res) => {
+///all orders
+router.get('/orders', async(req, res) => {
     try {
-        const allUsers = await UsersSchema.find()
-        res.send(allUsers)
+        const result = await pool.execute(getOrders_Query());
+        const answer = result[0];
+        res.send(answer)
     } catch (err) {
         res.status(500).json({ message: ` We have an error on server : ${err.message}` })
     }
@@ -26,9 +25,10 @@ router.post("/change/:id", async(req, res, next) => {
         const itemToChange = await ProductSchema.updateOne({ "_id": req.params.id }, { $set: { "name": name, "category": category, "price": price, "for_quantity": for_quantity, "for_measure": for_measure, "image": image } });
         if (itemToChange.ok) {
             // console.log(itemToChange);
-            res.status(201).json(`Product "${name}" was changed successfully.`);
+            res.status(201).json({ message: `Product "${name}" was changed successfully.` });
+        } else {
+            res.status(400).json({ message: ` We have an error .` })
         }
-
     } catch (err) {
         res.status(400).json({ message: ` We have an error with data : ${err.message}` })
     }
@@ -47,9 +47,11 @@ router.post("/new-producte", async(req, res, next) => {
     });
     try {
         const itemToSave = await newProduct.save();
-        if (itemToSave) {
-            console.log(itemToSave);
-            res.status(201).json(`Product "${itemToSave.name}" was added successfully.`);
+        if (itemToSave._id) {
+            // console.log(itemToSave._id);
+            res.status(201).json({ _id: itemToSave._id, message: `Product "${itemToSave.name}" was added successfully.` });
+        } else {
+            res.status(400).json({ message: ` We have an error .` })
         }
     } catch (err) {
         res.status(400).json({ message: ` We have an error with data : ${err.message}` })
@@ -67,5 +69,8 @@ router.post("/new-producte", async(req, res, next) => {
 //     }
 // })
 
+function getOrders_Query() {
+    return `SELECT * FROM shop_p.orders_table;`
+}
 
 module.exports = router;

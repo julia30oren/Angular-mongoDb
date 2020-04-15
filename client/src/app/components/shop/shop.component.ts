@@ -11,8 +11,7 @@ import { DataService } from 'src/app/services/data/data.service';
 export class ShopComponent implements OnInit {
 
   public productes_data_db: Array<any>;
-  public grouped_by: Array<any> = null;
-  public search_result: Array<any> = [];
+  public filtered_products: Array<any>;
   public open_cart: boolean = false;
   public open_orders: boolean = false;
   private save_resoult: any;
@@ -27,7 +26,11 @@ export class ShopComponent implements OnInit {
   ngOnInit() {
     //geting productes from database
     this.main_service.getProductes_fromDB()
-      .subscribe(data => { this.productes_data_db = data; });
+      .subscribe(data => {
+        this.productes_data_db = data;
+        this.filtered_products = data;
+        console.log(this.filtered_products)
+      });
     // console.log('2');
 
     if (JSON.parse(localStorage.getItem('268431621_u'))) {
@@ -46,23 +49,24 @@ export class ShopComponent implements OnInit {
     if (text) {
       const result = this.productes_data_db.filter(item => item.name.toLowerCase().includes(text.toLowerCase()));
       if (result) {
-        this.search_result = result;
+        this.filtered_products = result;
       }
-    }
+    } else this.filtered_products = this.productes_data_db;
+
 
   }
 
   groupeBy(groupe: string) {
     if (groupe === 'All') {
-      this.grouped_by = null;
+      this.filtered_products = this.productes_data_db;
     } else {
       const result = this.productes_data_db.filter(item => item.category === groupe)
-      this.grouped_by = result;
+      this.filtered_products = result;
     }
   }
 
   addToCart(item_id: number) {
-    if (localStorage.getItem('268431621_u')) {
+    if (localStorage.getItem('268431621_u').length > 0) {
       this.main_service.saveProducte(item_id, JSON.parse(localStorage.getItem('268431621_u'))._id)
         .subscribe(data => {
           this.save_resoult = data

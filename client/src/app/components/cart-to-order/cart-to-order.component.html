@@ -1,10 +1,11 @@
 <div id="cart">
+    <!-- {{my_cart | json}} -->
     <table class="table table-hover">
         <thead>
             <tr>
                 <th scope="col">Product Name</th>
                 <th scope="col">Picter</th>
-                <th class="price-text" scope="col">Price</th>
+                <th class="price-text" scope="col">Amount</th>
                 <th class="price-text" scope="col">Total Price</th>
             </tr>
         </thead>
@@ -12,7 +13,7 @@
             <tr *ngFor="let item of my_cart">
                 <th scope="row">{{item.name}}</th>
                 <td><img class="cart-img" src="{{item.image}}" alt="..."></td>
-                <td class="price-text">{{item.price}} $</td>
+                <td class="price-text">{{item.amount}} / {{item.for_quantity}}{{item.for_measure}}</td>
                 <td class="price-text">{{(item.amount * item.price).toFixed(2)}} $</td>
             </tr>
         </tbody>
