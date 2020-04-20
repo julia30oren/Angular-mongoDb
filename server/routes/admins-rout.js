@@ -3,7 +3,9 @@ const router = express.Router();
 const ProductSchema = require('./products/products-model');
 /// MySql
 const pool = require('../DB/pool');
-
+const logger = require("../logger");
+let time = Date.now();
+let now = new Date(time);
 
 ///all orders
 router.get('/orders', async(req, res) => {
@@ -24,13 +26,15 @@ router.post("/change/:id", async(req, res, next) => {
     try {
         const itemToChange = await ProductSchema.updateOne({ "_id": req.params.id }, { $set: { "name": name, "category": category, "price": price, "for_quantity": for_quantity, "for_measure": for_measure, "image": image } });
         if (itemToChange.ok) {
-            // console.log(itemToChange);
             res.status(201).json({ message: `Product "${name}" was changed successfully.` });
+            logger.error(`${now} - Product "${name}" was changed`);
         } else {
-            res.status(400).json({ message: ` We have an error .` })
+            res.status(400).json({ message: ` We have an error .` });
+            logger.error(`${now} - We have an error with changing product "${name}"`);
         }
     } catch (err) {
-        res.status(400).json({ message: ` We have an error with data : ${err.message}` })
+        res.status(400).json({ message: ` We have an error with data : ${err.message}` });
+        logger.error(`${now} - We have an error with changing product "${name}"`);
     }
 
 });
@@ -50,10 +54,13 @@ router.post("/new-producte", async(req, res, next) => {
         if (itemToSave._id) {
             // console.log(itemToSave._id);
             res.status(201).json({ _id: itemToSave._id, message: `Product "${itemToSave.name}" was added successfully.` });
+            logger.info(`${now} - New product posted "${itemToSave.name}"`);
         } else {
-            res.status(400).json({ message: ` We have an error .` })
+            res.status(400).json({ message: ` We have an error .` });
+            logger.error(`${now} - We have an error with posting new product`);
         }
     } catch (err) {
+        logger.error(`${now} - We have an error with posting new product`);
         res.status(400).json({ message: ` We have an error with data : ${err.message}` })
     }
 });
@@ -63,9 +70,11 @@ router.get("/order-st/:id", async(req, res, next) => {
     try {
         const result = await pool.execute(changeState_Query(), [req.params.id]);
         console.log(result);
+        logger.info(`${now} - order${req.params.id} status changed `);
         res.send(result);
     } catch (err) {
-        res.status(400).json({ message: ` We have an error: ${err.message}` })
+        res.status(400).json({ message: ` We have an error: ${err.message}` });
+        logger.error(`${now} - order${req.params.id} status changed  ERROR`);
     }
 
 });

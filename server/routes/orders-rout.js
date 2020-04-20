@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const UsersSchema = require('./user/user-model');
-// const ProductSchema = require('../products/products-model');
 /// MongoDB
 const mongoose = require('mongoose');
 /// MySql
@@ -50,8 +49,6 @@ function get1UserOrders_Query() {
     return `SELECT * FROM shop_p.orders_table
             WHERE user_id = ?;`
 }
-
-
 
 function putNewOrder_Query() {
     return `INSERT INTO shop_p.orders_table ( user_id, user_name, order_address, __order__, card_N, exp_date, user_comment, finale_price, shipping_date )
