@@ -63,7 +63,7 @@ export class AppComponent implements OnInit {
 
 
   do_signout() {
-    this.data_service.save_UserData('');
+    this.data_service.save_UserData('', 0);
     this.data_service.signAdmin(false);
     localStorage.clear();
   }

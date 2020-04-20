@@ -14,6 +14,7 @@ export class ShopComponent implements OnInit {
   public filtered_products: Array<any>;
   public open_cart: boolean = false;
   public open_orders: boolean = false;
+  private var: any;
   private save_resoult: any;
   public message: string = localStorage.getItem('268431621_u') ? '' : 'to shop, please, logIn';
 
@@ -24,25 +25,34 @@ export class ShopComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    //geting productes from database
-    this.main_service.getProductes_fromDB()
-      .subscribe(data => {
-        this.productes_data_db = data;
-        this.filtered_products = data;
-        console.log(this.filtered_products)
-      });
-    // console.log('2');
-
-    if (JSON.parse(localStorage.getItem('268431621_u'))) {
-      this.main_service.getUser_cart(JSON.parse(localStorage.getItem('268431621_u'))._id)
-        .subscribe(data => {
-          console.log(data);
-          // console.log('3');
-          localStorage.setItem('w_345436583_l', JSON.stringify(data));
-          // console.log('4');
+    if (localStorage.getItem('_t87582')) {
+      this.main_service.tokenVar(localStorage.getItem('_t87582'), 'user')
+        .subscribe(res => {
+          // console.log(res);
+          this.var = res;
+          if (this.var.response) {
+            //geting productes from database
+            this.main_service.getProductes_fromDB()
+              .subscribe(data => {
+                this.productes_data_db = data;
+                this.filtered_products = data;
+              });
+            ///get users cart
+            this.main_service.getUser_cart(JSON.parse(localStorage.getItem('268431621_u'))._id)
+              .subscribe(data => {
+                localStorage.setItem('w_345436583_l', JSON.stringify(data));
+              })
+          } else {
+            this.data_service.save_UserData('', 0);
+            alert('Access denied!');
+            this.router.navigate(['/home']);
+            localStorage.clear();
+          }
         })
+    } else {
+      alert('Access denied!');
+      this.router.navigate(['/home']);
     }
-
   }
 
   searchBYname(text: string) {

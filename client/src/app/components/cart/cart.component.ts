@@ -18,22 +18,16 @@ export class CartComponent implements OnInit {
   public message: string;
 
   ngOnInit() {
-    console.log('open cart');
     ///get users cart
     this.data_service.user_CART_from_service.subscribe(data => {
-      console.log(data);
       this.my_cart = data;
-      console.log(this.my_cart);
     });
     ///get total price
     this.data_service.getTotalPrice();
     this.data_service.total_price_from_service.subscribe(data => {
-      console.log(data);
       this.total_price = data;
     })
-    //
     this.data_service.message_from_service.subscribe(data => {
-      console.log(data);
       this.message = data;
     });
   }

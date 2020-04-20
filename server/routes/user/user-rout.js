@@ -4,6 +4,12 @@ const UsersSchema = require('./user-model');
 const ProductSchema = require('../products/products-model');
 const mongoose = require('mongoose');
 const pool = require('../../DB/pool');
+const bcrypt = require('bcrypt');
+const JWT = require('jsonwebtoken');
+
+// const Validations = require('../../validations');
+
+// router.use(Validations);
 
 router.get('/:id', getUsersById, async(req, res) => {
     try {
@@ -30,12 +36,14 @@ router.get('/address/:id', getUsersById, async(req, res) => {
 });
 
 router.post('/new-user', async(req, res) => {
-    // console.log(req.body);
+    const salt = bcrypt.genSaltSync(10);
+    const passwordHash = bcrypt.hashSync(req.body.password, salt);
+
     const newUser = new UsersSchema({
         name: req.body.first_name + ' ' + req.body.last_name,
-        id: req.body.id,
+        passportN: req.body.PN,
         email: req.body.email,
-        password: req.body.password,
+        password: passwordHash,
         adress: [{
             city: req.body.city,
             street: req.body.street,
@@ -44,12 +52,20 @@ router.post('/new-user', async(req, res) => {
             phone_num: req.body.phone_num
         }]
     });
-    // console.log(newUser);
+    console.log(newUser);
+
     try {
-        const userToSave = await newUser.save();
-        res.json(` User ${userToSave.name} signed up successfully.`);
+        const ifUserExist = await UsersSchema.find({ $or: [{ "passportN": req.body.PN }, { "email": req.body.email }] });
+        if (ifUserExist[0]) {
+            res.json({ status: 5 })
+        } else {
+            const userToSave = await newUser.save();
+            console.log('new user to db 3');
+            res.json({ status: 6, name: userToSave.name });
+        }
     } catch (err) {
-        res.status(400).json(` We have an error with users data.`)
+        console.log(err.message)
+        res.status(400).json({ message: err.message })
     }
 });
 
@@ -59,18 +75,26 @@ router.post('/user-login', async(req, res) => {
         const result = await pool.execute(adminCheck_Query(), [email, password]);
         const exist = result[0];
         if (exist) {
-            res.json({ message: 'admin signed in', name: 'Admin' })
+            const adminToken = JWT.sign({ email }, process.env.ADMIN_SECRET, { expiresIn: '12h' });
+            res.json({ status: 4, token: adminToken })
         }
     } else {
+        console.log('3 login')
         try {
-            const login = await UsersSchema.find({ "email": email, "password": password });
-            if (!login[0]) {
-                res.json({ message: 'No user found' });
-            } else {
-                // console.log({ name: login[0].name, _id: login[0]._id, whish_list: login[0].whish_list });
-                res.json({ name: login[0].name, _id: login[0]._id, whish_list: login[0].whish_list });
-            }
+            const loginU = await UsersSchema.find({ "email": email });
+            // console.log('4 login', loginU[0].password);
+            const User = loginU[0];
+            if (User) {
+                const hush = User.password;
+                const cryptoPassChek = bcrypt.compareSync(password, hush);
+                // console.log(cryptoPassChek);
+                if (cryptoPassChek) {
+                    const userToken = JWT.sign({ email }, process.env.SECRET, { expiresIn: '2h' });
+                    res.json({ status: 3, token: userToken, name: User.name, _id: User._id, whish_list: User.whish_list });
+                } else res.json({ status: 2 });
+            } else res.json({ status: 1 });
         } catch (err) {
+            console.log(err.message)
             return res.status(500).send({ message: err.message })
         }
     }
@@ -123,13 +147,6 @@ router.post('/cart-add', async(req, res) => {
     }
 });
 
-// router.post('/cart-add2', async(req, res) => {
-//     console.log(req.body)
-//     const searchItem = await UsersSchema.find({ "_id": req.body.user_id, "whish_list.item_id": req.body.item_id });
-//     console.log(searchItem, 'end');
-//     res.json(searchItem)
-// })
-
 //remove one -1 or item
 router.post('/cart-remove', async(req, res) => {
     const { user_id, item_id } = req.body;
@@ -170,10 +187,6 @@ router.post('/cart-removeItem', async(req, res) => {
     }
 });
 
-// function deletePropuct(user_id, item_id) {
-//     console.log('function ', user_id, item_id);
-
-// }
 
 router.get('/delete-WL/:id', async(req, res) => {
     // console.log('delete ', req.params.sid)

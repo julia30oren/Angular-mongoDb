@@ -10,7 +10,7 @@ router.get('/orders', async(req, res) => {
     try {
         const result = await pool.execute(getOrders_Query());
         const answer = result[0];
-        res.send(answer)
+        res.send(answer);
     } catch (err) {
         res.status(500).json({ message: ` We have an error on server : ${err.message}` })
     }
@@ -58,6 +58,30 @@ router.post("/new-producte", async(req, res, next) => {
     }
 });
 
+////change state of order
+router.get("/order-st/:id", async(req, res, next) => {
+    try {
+        const result = await pool.execute(changeState_Query(), [req.params.id]);
+        console.log(result);
+        res.send(result);
+    } catch (err) {
+        res.status(400).json({ message: ` We have an error: ${err.message}` })
+    }
+
+});
+
+
+function getOrders_Query() {
+    return `SELECT * FROM shop_p.orders_table;`
+}
+
+function changeState_Query() {
+    return `UPDATE shop_p.orders_table
+            SET done = true
+            WHERE order_id = ?;`
+}
+
+module.exports = router;
 
 ///delete product by ID
 // router.delete('/:id', getById, async(req, res) => {
@@ -68,9 +92,3 @@ router.post("/new-producte", async(req, res, next) => {
 //         res.status(400).json({ message: ` We have an error with delete : ${err.message}` })
 //     }
 // })
-
-function getOrders_Query() {
-    return `SELECT * FROM shop_p.orders_table;`
-}
-
-module.exports = router;

@@ -3,12 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { Product_Interface } from '../interfaces/productes';
 import { Observable } from 'rxjs';
 import { User_Interface } from '../interfaces/user';
+import { TV_Interface } from '../interfaces/token';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MainService {
 
+  private Verification: string = 'http://localhost:5001/ver';
   private Productes_url: string = 'http://localhost:5001/productes';
   private Users_url: string = 'http://localhost:5001/user';
 
@@ -16,12 +18,18 @@ export class MainService {
     private http: HttpClient
   ) { }
 
+  tokenVar(token: string, user: string): Observable<TV_Interface[]> {
+    const _result = this.http.post<TV_Interface[]>(`${this.Verification}`, { token: token, user: user });
+    return _result;
+  }
+
   getProductes_fromDB(): Observable<Product_Interface[]> {
     const getProductes_result = this.http.get<Product_Interface[]>(this.Productes_url);
     return getProductes_result;
   }
 
   createUser_DB(user: object): Observable<User_Interface[]> {
+    console.log('new user to db 2')
     const res = this.http.post<User_Interface[]>(`${this.Users_url}/new-user`, user);
     return res;
   }
@@ -42,6 +50,7 @@ export class MainService {
   }
 
   logIn(user: object): Observable<User_Interface[]> {
+    console.log('check 2 login');
     const res = this.http.post<User_Interface[]>(`${this.Users_url}/user-login`, user);
     return res;
   }

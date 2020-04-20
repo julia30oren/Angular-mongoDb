@@ -25,7 +25,7 @@
                 <li class="nav-item">
                     <button class="nav-link btn btn-light btn-block" (click)="ection_to_do = 'login'" *ngIf="ection_to_do !== 'login'"> SignIn </button>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" *ngIf="ection_to_do !== 'signup'">
                     <button class="nav-link btn btn-light btn-block" (click)="ection_to_do = 'signup'" *ngIf="!user_name && !admin"> SignUp </button>
                 </li>
                 <li class="nav-item">

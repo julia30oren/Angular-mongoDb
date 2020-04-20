@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/app/services/data/data.service';
 import { AdminService } from 'src/app/services/admin/admin.service';
+import { MainService } from 'src/app/services/main.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-shop',
@@ -22,18 +24,38 @@ export class AdminShopComponent implements OnInit {
   public image: string;
   public message: string;
   public response: any;
+  public x: any
   constructor(
     private admin_service: AdminService,
-    private data_service: DataService
+    private main_service: MainService,
+    private data_service: DataService,
+    private router: Router
   ) { }
 
   ngOnInit() {
     //geting productes from database
-    this.data_service.get_productes_fromDB();
-    this.data_service.all_productes_list_from_service.subscribe(data => {
-      this.filtered_products = data;
-      this.productes_data_db = data;
-    });
+    if (localStorage.getItem('2684_a_1621_')) {
+      this.main_service.tokenVar(localStorage.getItem('2684_a_1621_'), 'admin')
+        .subscribe(res => {
+          this.x = res;
+          if (this.x.responce) {
+            console.log('ok');
+            this.data_service.get_productes_fromDB();
+            this.data_service.all_productes_list_from_service.subscribe(data => {
+              this.filtered_products = data;
+              this.productes_data_db = data;
+            });
+          } else {
+            this.data_service.signAdmin(false);
+            alert('Access denied!');
+            this.router.navigate(['/home']);
+            localStorage.clear();
+          }
+        })
+    } else {
+      alert('Access denied!');
+      this.router.navigate(['/home']);
+    }
   }
 
   searchBYname(text: string) {

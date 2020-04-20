@@ -7,6 +7,8 @@ import { MainService } from '../main.service';
 })
 export class DataService {
   ///for users:
+  private NofItems = new BehaviorSubject<number>(JSON.parse(localStorage.getItem('w_345436583_l')) ? (JSON.parse(localStorage.getItem('w_345436583_l'))).length : 0);
+  public NofItems_from_service = this.NofItems.asObservable();
   private cart = localStorage.getItem('w_345436583_l') ? JSON.parse(localStorage.getItem('w_345436583_l')) : [];
   private user_name = new BehaviorSubject<string>(localStorage.getItem('268431621_u') ? JSON.parse(localStorage.getItem('268431621_u')).name : '');
   public user_name_from_service = this.user_name.asObservable();
@@ -36,7 +38,6 @@ export class DataService {
 
   //for admin:
   signAdmin(or: boolean) {
-    console.log(or)
     if (or === true) {
       this.signed_as_admin.next(true);
     } else {
@@ -48,8 +49,9 @@ export class DataService {
   }
 
   ///for users:
-  save_UserData(name: string) {
+  save_UserData(name: string, num: number) {
     this.user_name.next(name);
+    this.NofItems.next(num);
     this.getTotalPrice();
   }
 

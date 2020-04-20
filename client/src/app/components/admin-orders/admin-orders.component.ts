@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from 'src/app/services/admin/admin.service';
+import { MainService } from 'src/app/services/main.service';
+import { Router } from '@angular/router';
+import { DataService } from 'src/app/services/data/data.service';
 
 @Component({
   selector: 'app-admin-orders',
@@ -11,23 +14,46 @@ export class AdminOrdersComponent implements OnInit {
   public orders_fromDB: Array<any>;
   public extra: Array<any> = [];
   public price: number;
+  public x;
   constructor(
-    private admins_service: AdminService
+    private admins_service: AdminService,
+    private main_service: MainService,
+    private data_service: DataService,
+    private router: Router
+
   ) { }
 
   ngOnInit() {
-    this.admins_service.get_Orders()
-      .subscribe(data => {
-        console.log(data);
-        this.orders_fromDB = data;
-        this.orders_fromDB.forEach(element => {
-          element.order_address = JSON.parse(element.order_address);
-          element.__order__ = JSON.parse(element.__order__).wl;
-          if (element.done === 0) {
-            element.done = false;
-          } else element.done = true;
+    if (localStorage.getItem('2684_a_1621_')) {
+      this.main_service.tokenVar(localStorage.getItem('2684_a_1621_'), 'admin')
+        .subscribe(res => {
+          this.x = res;
+          if (this.x.responce) {
+            console.log('ok');
+            this.admins_service.get_Orders()
+              .subscribe(data => {
+                // console.log(data);
+                this.orders_fromDB = data;
+                this.orders_fromDB.forEach(element => {
+                  element.order_address = JSON.parse(element.order_address);
+                  element.__order__ = JSON.parse(element.__order__).wl;
+                  if (element.done === 0) {
+                    element.done = false;
+                  } else element.done = true;
+                });
+              })
+          } else {
+            this.data_service.signAdmin(false);
+            alert('Access denied!');
+            this.router.navigate(['/home']);
+            localStorage.clear();
+          }
         });
-      })
+    } else {
+      alert('Access denied!');
+      this.router.navigate(['/home']);
+    }
+
   }
 
   changeState(order_id: number) {
@@ -35,6 +61,8 @@ export class AdminOrdersComponent implements OnInit {
       if (element.order_id === order_id) {
         // console.log(element.done);
         element.done = !element.done;
+        this.admins_service.changeOrders_state(element.order_id)
+          .subscribe(re => console.log(re))
       }
     })
   }

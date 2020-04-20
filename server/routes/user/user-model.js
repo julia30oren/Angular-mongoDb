@@ -1,22 +1,15 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// const Adress = new Schema({
-
-// });
-
-// const List = new Schema({
-
-// })
-
 const UserSchema = new Schema({
     name: {
         type: String,
         required: true
     },
-    id: {
-        type: Number,
-        // unique: true
+    passportN: {
+        type: String,
+        required: true,
+        unique: true
     },
     email: {
         type: String,

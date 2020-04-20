@@ -4,6 +4,8 @@
         <line x1="0" y1="0" x2="500" y2="0" style="stroke:rgb(255,0,0);stroke-width:2" />
     </svg>
 
+    <h4 *ngIf="!data_from_DB">You don't have any orders.</h4>
+
     <div class="order" *ngFor="let order of data_from_DB">
         <h4>{{order.order_date | date: "shortDate"}} </h4>
         <div *ngFor="let item of order.__order__">

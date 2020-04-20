@@ -32,4 +32,9 @@ export class AdminService {
     const newP_result = this.http.post<Product_Interface[]>(`${this.admin_url}/new-producte`, producte);
     return newP_result;
   }
+
+  changeOrders_state(order_id: number): Observable<Product_Interface[]> {
+    const change_result = this.http.get<Product_Interface[]>(`${this.admin_url}/order-st/${order_id}`);
+    return change_result;
+  }
 }

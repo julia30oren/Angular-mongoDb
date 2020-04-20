@@ -11,7 +11,7 @@ function ifEnvVarieblesExist(params) {
         console.log(`${missingPart} --is missing in .env`)
     } else return;
 }
-ifEnvVarieblesExist(["PORT", "HOST", "USER", "PASSWORD", "mongo_DATABASE", "mySgl_DATABASE", "DB_PORT"]);
+ifEnvVarieblesExist(["PORT", "HOST", "USER", "PASSWORD", "mongo_DATABASE", "mySgl_DATABASE", "DB_PORT", "SECRET", "ADMIN_SECRET"]);
 
 
 mongoose.connect(process.env.mongo_DATABASE, { useNewUrlParser: true, useUnifiedTopology: true }, () => {
@@ -21,9 +21,13 @@ const db = mongoose.connection;
 db.on('error', (error) => { console.log('!!!!!! ', error) })
 db.once('open', () => { console.log('Connected to DB') })
 
+// app.use(require('./verification'));
+
 app.use(cors({ origin: 'http://localhost:4200' }));
 
 app.use(express.json());
+app.use('/ver', require('./verification'));
+
 app.use('/user', require('./routes/user/user-rout'));
 app.use('/admin', require('./routes/admins-rout'));
 app.use('/productes', require('./routes/products/products-rout'));

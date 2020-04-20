@@ -8,14 +8,13 @@
                 <th scope="col">Address</th>
                 <th scope="col">User Comment</th>
                 <th scope="col">Shipping Date</th>
-                <th scope="col">Done/Not Done</th>
+                <th scope="col">Status</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let item of orders_fromDB" class="tr-hov">
                 <td>
                     <button (click)="extraInfo(item.__order__, item.finale_price)">Get Order Details</button>
-                    <!-- <p *ngFor="let product of item.__order__">{{product.name | json}}</p> -->
                 </td>
                 <td>{{item.order_date | date }}</td>
                 <td>
@@ -28,8 +27,8 @@
                 <td *ngIf="item.user_comment==='no comments'">-</td>
 
                 <td>{{item.shipping_date | date}}</td>
-                <td *ngIf="!item.done"><button class="buttone-done" (click)="changeState(item.order_id)">Done</button></td>
-                <td *ngIf="item.done"><button class="buttone-not-done" (click)="changeState(item.order_id)">Not Done</button></td>
+                <td *ngIf="!item.done"><button class="buttone-done" (click)="changeState(item.order_id)">Set Done</button></td>
+                <td *ngIf="item.done" id='done'>Done</td>
             </tr>
         </tbody>
     </table>
@@ -54,6 +53,10 @@
         min-height: 1300px;
     }
     
+    #done {
+        color: red;
+    }
+    
     .id-done {
         text-decoration: line-through solid rgb(68, 68, 68);
     }
@@ -68,10 +71,6 @@
     
     .buttone-done {
         background-color: rgba(25, 95, 34, 0.3);
-    }
-    
-    .buttone-not-done {
-        background-color: rgba(85, 32, 121, 0.3);
     }
     
     button:hover {

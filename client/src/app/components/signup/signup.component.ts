@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 export class SignupComponent implements OnInit {
   public first_name: string;
   public last_name: string;
-  public user_id: number;
+  public user_id: string;
   public email: string;
   public password: string;
   public conf_p: string;
@@ -19,13 +19,14 @@ export class SignupComponent implements OnInit {
   public street: string;
   public house: string;
   public apartments: string;
-  public phone_num: string;
+  public phone_num: number;
 
   public next_step: boolean = false;
   public newUser: object;
   public thisUser: Array<any>;
   public send: boolean = false;
   public message: string;
+  private rep: any;
 
   constructor(
     private main_service: MainService,
@@ -73,7 +74,7 @@ export class SignupComponent implements OnInit {
                           this.newUser = {
                             first_name: this.first_name.charAt(0).toUpperCase() + this.first_name.slice(1),
                             last_name: this.last_name.charAt(0).toUpperCase() + this.last_name.slice(1),
-                            id: this.user_id,
+                            PN: this.user_id,
                             email: this.email,
                             password: this.password,
                             city: this.city,
@@ -107,8 +108,22 @@ export class SignupComponent implements OnInit {
   }
 
   seaveNewUser() {
+    console.log('new user to db 1', this.newUser)
     this.main_service.createUser_DB(this.newUser)
-      .subscribe(data => { window.alert(data); this.router.navigate(['/sign-in']); })
+      .subscribe(data => {
+        this.rep = data;
+        switch (this.rep.status) {
+          case 5:
+            alert('This user already exist.');
+            break;
+          case 6:
+            alert(`User ${this.rep.name} signed in successfully.`);
+            location.reload();
+            break;
+          default:
+            console.log(data);
+        }
+      })
   }
 
 }
