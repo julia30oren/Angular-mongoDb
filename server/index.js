@@ -30,13 +30,10 @@ db.once('open', () => {
     logger.info(`${now} - Connected to MongoDB`);
 })
 
-// app.use(require('./verification'));
-
 app.use(cors({ origin: 'http://localhost:4200' }));
 
 app.use(express.json());
 app.use('/ver', require('./verification'));
-
 app.use('/user', require('./routes/user/user-rout'));
 app.use('/admin', require('./routes/admins-rout'));
 app.use('/productes', require('./routes/products/products-rout'));

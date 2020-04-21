@@ -7,24 +7,24 @@ router.get('/', async(req, res) => {
         const allProductes = await ProductSchema.find();
         res.json(allProductes);
     } catch (err) {
-        res.status(500).json({ message: ` We have an error on server : ${err.message}` })
+        res.status(404).json({ message: ` We have an error on server : ${err.message}` })
     }
 });
 
 router.get('/:id', getById, async(req, res) => {
     try {
-        res.json([res.thisProduct])
+        res.status(302).json([res.thisProduct])
     } catch (error) {
-        res.status(400).json({ message: ` We have an error with data : ${err.message}` })
+        res.status(404).json({ message: ` We have an error with data : ${err.message}` })
     }
 });
 
 router.get('/category/:name', getByName, async(req, res) => {
     // res.json(res.thisGroupe)
     try {
-        res.json(res.thisGroupe)
+        res.status(302).json(res.thisGroupe)
     } catch (error) {
-        res.status(400).json({ message: ` We have an error with data : ${err.message}` })
+        res.status(404).json({ message: ` We have an error with data : ${err.message}` })
     }
 });
 

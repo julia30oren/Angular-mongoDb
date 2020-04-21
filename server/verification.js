@@ -12,20 +12,20 @@ router.post("/", async(req, res, next) => {
         if (user === 'admin') {
             var decoded = JWT.verify(JSON.parse(token), process.env.ADMIN_SECRET);
             if (decoded) {
-                res.json({ responce: true });
+                res.status(202).json({ responce: true });
                 logger.info(`${now} -  Admin loged in`);
             } else logger.error(`${now} - Admin error`);
         } else {
             var decoded = JWT.verify(token, process.env.SECRET);
             if (decoded) {
-                res.json({ response: true });
+                res.status(202).json({ response: true });
             }
         }
 
     } catch (err) {
         if (err) {
             logger.error(`${now} - verification error`);
-            res.json({ responce: false, message: err.message });
+            res.status(403).json({ responce: false, message: err.message });
         }
     }
 })

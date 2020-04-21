@@ -12,9 +12,9 @@ router.get('/orders', async(req, res) => {
     try {
         const result = await pool.execute(getOrders_Query());
         const answer = result[0];
-        res.send(answer);
+        res.status(200).send(answer);
     } catch (err) {
-        res.status(500).json({ message: ` We have an error on server : ${err.message}` })
+        res.status(404).json({ message: ` We have an error on server : ${err.message}` })
     }
 });
 
@@ -52,16 +52,15 @@ router.post("/new-producte", async(req, res, next) => {
     try {
         const itemToSave = await newProduct.save();
         if (itemToSave._id) {
-            // console.log(itemToSave._id);
-            res.status(201).json({ _id: itemToSave._id, message: `Product "${itemToSave.name}" was added successfully.` });
+            res.status(200).json({ _id: itemToSave._id, message: `Product "${itemToSave.name}" was added successfully.` });
             logger.info(`${now} - New product posted "${itemToSave.name}"`);
         } else {
-            res.status(400).json({ message: ` We have an error .` });
+            res.status(406).json({ message: ` We have an error .` });
             logger.error(`${now} - We have an error with posting new product`);
         }
     } catch (err) {
         logger.error(`${now} - We have an error with posting new product`);
-        res.status(400).json({ message: ` We have an error with data : ${err.message}` })
+        res.status(406).json({ message: ` We have an error with data : ${err.message}` })
     }
 });
 
@@ -71,7 +70,7 @@ router.get("/order-st/:id", async(req, res, next) => {
         const result = await pool.execute(changeState_Query(), [req.params.id]);
         console.log(result);
         logger.info(`${now} - order${req.params.id} status changed `);
-        res.send(result);
+        res.status(200).send(result);
     } catch (err) {
         res.status(400).json({ message: ` We have an error: ${err.message}` });
         logger.error(`${now} - order${req.params.id} status changed  ERROR`);
@@ -91,13 +90,3 @@ function changeState_Query() {
 }
 
 module.exports = router;
-
-///delete product by ID
-// router.delete('/:id', getById, async(req, res) => {
-//     try {
-//         await res.thisProduct.remove();
-//         res.json({ message: `"${res.thisProduct.name}" item was deleted` })
-//     } catch (error) {
-//         res.status(400).json({ message: ` We have an error with delete : ${err.message}` })
-//     }
-// })
