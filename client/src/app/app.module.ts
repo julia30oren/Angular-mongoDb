@@ -16,6 +16,7 @@ import { UserOrdersComponent } from './components/user-orders/user-orders.compon
 import { AdminOrdersComponent } from './components/admin-orders/admin-orders.component';
 import { AdminShopComponent } from './components/admin-shop/admin-shop.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,7 +30,8 @@ import { AdminShopComponent } from './components/admin-shop/admin-shop.component
     CartToOrderComponent,
     UserOrdersComponent,
     AdminOrdersComponent,
-    AdminShopComponent],
+    AdminShopComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
