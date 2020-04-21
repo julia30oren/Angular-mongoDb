@@ -1,5 +1,5 @@
 <div id="forUser" *ngIf="!admin">
-    <div class="boxes">
+    <div id="boxes1">
         <div id="do-logi-IN" *ngIf="ection_to_do ==='login' && user_name === ''">
             <app-signin></app-signin>
         </div>
@@ -22,20 +22,30 @@
 
         <div>
             <ul class="navbar-nav">
-                <li class="nav-item">
+                <li class="nav-item" *ngIf="ection_to_do !== 'password-change'">
                     <button class="nav-link btn btn-light btn-block" (click)="ection_to_do = 'login'" *ngIf="ection_to_do !== 'login'"> SignIn </button>
                 </li>
                 <li class="nav-item" *ngIf="ection_to_do !== 'signup'">
                     <button class="nav-link btn btn-light btn-block" (click)="ection_to_do = 'signup'" *ngIf="!user_name && !admin"> SignUp </button>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" *ngIf="ection_to_do !== 'password-change'">
                     <button class="nav-link btn btn-light btn-block" (click)="ection_to_do = 'password-change'" *ngIf="user_name"> Change Password? </button>
                 </li>
             </ul>
         </div>
     </div>
-    <div class="boxes">
-
+    <div id="boxes2">
+        <img src="https://chabadvienna.com/wp-content/uploads/2018/02/4-550x320.jpg" alt="sorry" id="img-shop">
+        <hr>
+        <p>
+            Welcome to our self-service online shop! We are offering a wide variety of food.
+        </p>
+        <p>
+            We have <mark>{{NofProd}}</mark> products in our store.
+        </p>
+        <p>
+            We hope to live up to your expectations.
+        </p>
     </div>
 </div>
 
@@ -61,10 +71,26 @@
         display: flex;
     }
     
-    .boxes {
-        border: black solid 1px;
-        width: 780px;
+    #img-shop {
+        width: 94%;
         margin: 3%;
+    }
+    
+    #boxes1 {
+        /* border: rgba(54, 54, 54, 0.425) solid 1px; */
+        width: 880px;
+        margin: 2%;
+        overflow-y: auto;
+    }
+    
+    #boxes1::-webkit-scrollbar {
+        display: none;
+    }
+    
+    #boxes2 {
+        /* border: rgba(54, 54, 54, 0.425) solid 1px; */
+        width: 400px;
+        margin: 2%;
     }
     
     #do-logi-IN {
@@ -90,7 +116,6 @@
     
     #forAdmin {
         border: black solid 1px;
-        /* height: 500px; */
         width: 60%;
         margin-top: 5%;
         margin-left: 20%;

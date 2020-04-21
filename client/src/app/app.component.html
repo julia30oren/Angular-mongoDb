@@ -1,16 +1,4 @@
-<div class="top-container">
-    <h1> Demo Site </h1>
-    <p>+9072524458442</p>
-</div>
-<style>
-    .top-container {
-        text-align: center;
-        color: grey;
-    }
-</style>
-
-<!-- header -->
-<div class="header" id="myHeader" [class.sticky]="sticky" #stickyMenu>
+<div class="header" id="myHeader">
 
     <nav class="navbar navbar-expand-lg navbar-light">
         <a class="navbar-brand" href="/" id="stor-name">
@@ -51,12 +39,6 @@
 </div>
 
 <style>
-    #jdgn {
-        height: 50px;
-        width: 50px;
-        background-color: brown;
-    }
-    
     img {
         height: 150px;
     }
@@ -64,13 +46,7 @@
     .header {
         margin-left: 15%;
         width: 70%;
-        border: black solid 1px;
-    }
-    
-    .sticky {
-        position: fixed;
-        top: 0;
-        z-index: 100;
+        border: rgba(54, 54, 54, 0.425) solid 1px;
     }
 </style>
 
@@ -80,12 +56,9 @@
 
 
 <style>
-    /* “on scroll” sticky menu */
-    
     .content {
         justify-content: center;
         text-align: center;
-        border: black solid 1px;
         width: 70%;
         margin-left: 15%;
     }

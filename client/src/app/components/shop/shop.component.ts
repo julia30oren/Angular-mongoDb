@@ -28,7 +28,6 @@ export class ShopComponent implements OnInit {
     if (localStorage.getItem('_t87582')) {
       this.main_service.tokenVar(localStorage.getItem('_t87582'), 'user')
         .subscribe(res => {
-          // console.log(res);
           this.var = res;
           if (this.var.response) {
             //geting productes from database
@@ -81,17 +80,14 @@ export class ShopComponent implements OnInit {
         .subscribe(data => {
           this.save_resoult = data
           if (this.save_resoult.amount === 1) {
-            // console.log('data.amount', this.save_resoult.amount);
             this.data_service.add_newItem_toCart(this.save_resoult.item);
           } else {
-            // console.log('data.amount /////', this.save_resoult.amount);
             this.more(item_id);
           }
         });
     } else {
       alert(this.message)
     }
-
   }
 
   more(item_id) {

@@ -40,7 +40,6 @@ export class CartComponent implements OnInit {
   add_toDB(item_id) {
     this.main_service.saveProducte(item_id, JSON.parse(localStorage.getItem('268431621_u'))._id)
       .subscribe(data => {
-        console.log(data);
       });
   }
 
@@ -56,7 +55,6 @@ export class CartComponent implements OnInit {
   decrease_inDB(item_id) {
     this.main_service.productAmount_decrease(item_id, JSON.parse(localStorage.getItem('268431621_u'))._id)
       .subscribe(data => {
-        console.log(data);
       });
   }
 
@@ -68,7 +66,6 @@ export class CartComponent implements OnInit {
   remove_fromDB(item_id) {
     this.main_service.product_delete(item_id, JSON.parse(localStorage.getItem('268431621_u'))._id)
       .subscribe(data => {
-        console.log(data);
       });
   }
 

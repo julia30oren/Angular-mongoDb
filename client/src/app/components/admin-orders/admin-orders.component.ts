@@ -29,10 +29,8 @@ export class AdminOrdersComponent implements OnInit {
         .subscribe(res => {
           this.x = res;
           if (this.x.responce) {
-            console.log('ok');
             this.admins_service.get_Orders()
               .subscribe(data => {
-                // console.log(data);
                 this.orders_fromDB = data;
                 this.orders_fromDB.forEach(element => {
                   element.order_address = JSON.parse(element.order_address);
@@ -59,7 +57,6 @@ export class AdminOrdersComponent implements OnInit {
   changeState(order_id: number) {
     this.orders_fromDB.forEach(element => {
       if (element.order_id === order_id) {
-        // console.log(element.done);
         element.done = !element.done;
         this.admins_service.changeOrders_state(element.order_id)
           .subscribe(re => console.log(re))
@@ -70,7 +67,6 @@ export class AdminOrdersComponent implements OnInit {
   extraInfo(_order_: Array<any>, f_price: number) {
     this.extra = _order_;
     this.price = f_price;
-    console.log(this.extra);
   }
 
   extraClean() {

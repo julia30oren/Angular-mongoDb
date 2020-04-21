@@ -40,15 +40,12 @@ export class OrderComponent implements OnInit {
     if (JSON.parse(localStorage.getItem('268431621_u'))) {
       if (JSON.parse(localStorage.getItem('268431621_u'))._id) {
         this.userVar = true;
-        console.log(localStorage.getItem('w_345436583_l'))
-
         if (localStorage.getItem('w_345436583_l') === '[]') {
           this.message = 'Cart is empty.'
         } else {
           ///get total price
           this.data_service.getTotalPrice();
           this.data_service.total_price_from_service.subscribe(data => {
-            console.log(data);
             this.finale_price = data;
           })
         }
@@ -60,7 +57,6 @@ export class OrderComponent implements OnInit {
 
   use_adress() {
     this.useAddress = !this.useAddress;
-    console.log(this.useAddress);
     if (this.useAddress === true && JSON.parse(localStorage.getItem('268431621_u'))) {
       this.main_service.getUsers_address(JSON.parse(localStorage.getItem('268431621_u'))._id).subscribe(data => {
         this.Address = data;
@@ -123,7 +119,6 @@ export class OrderComponent implements OnInit {
         } else { this.message = 'All fields should be filed. No "Street"'; this.warning_message = true; }
       } else { this.message = 'All fields should be filed. No "City"'; this.warning_message = true; }
     } else {
-      console.log('user is not loged in')
     }
 
   }

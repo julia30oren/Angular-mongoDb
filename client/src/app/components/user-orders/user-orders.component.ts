@@ -21,7 +21,6 @@ export class UserOrdersComponent implements OnInit {
         this.orders_service.get1UserOrders_mySql(JSON.parse(localStorage.getItem('268431621_u'))._id)
           .subscribe(data => {
             this.data_from_DB = data;
-            console.log(data);
             this.data_from_DB.forEach(element => {
               element.__order__ = JSON.parse(element.__order__).wl;
               element.order_address = JSON.parse(element.order_address);

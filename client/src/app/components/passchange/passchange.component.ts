@@ -12,7 +12,7 @@ export class PasschangeComponent implements OnInit {
   public email: string;
   public password: string;
   public new_password: string;
-
+  private res: any;
   constructor(
     private main_service: MainService
   ) { }
@@ -32,8 +32,26 @@ export class PasschangeComponent implements OnInit {
 
 
   sendNewPassword() {
-    console.log('ok');
     this.main_service.newPassword({ email: this.email, oldPass: this.password, password: this.new_password })
-      .subscribe(data => { window.alert(data) })
+      .subscribe(data => {
+        this.res = data;
+        switch (this.res.status) {
+          case 5:
+            window.alert(`Password was changed successfully.`);
+            window.location.reload();
+            break;
+          case 6:
+            window.alert(`Password wasn't changed.`);
+            break;
+          case 7:
+            window.alert(`Old password does not match.`);
+            break;
+          case 7:
+            window.alert(this.res.message);
+            break;
+          default:
+            window.alert(data);
+        }
+      })
   }
 }

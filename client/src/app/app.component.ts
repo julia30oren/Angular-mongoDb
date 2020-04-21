@@ -36,29 +36,13 @@ export class AppComponent implements OnInit {
         } else {
           this.loged_as_admin = false;
         }
-
       })
-
     if (JSON.parse(localStorage.getItem('268431621_u'))) {
       this.main_service.getUser_cart(JSON.parse(localStorage.getItem('268431621_u'))._id)
         .subscribe(data => localStorage.setItem('w_345436583_l', JSON.stringify(data)))
       // this.data_service.getTotalPrice();
     }
 
-  }
-
-  ngAfterViewInit() {
-    this.elementPosition = this.menuElement.nativeElement.offsetTop;
-  }
-
-  @HostListener('window:scroll', ['$event'])
-  handleScroll() {
-    const windowScroll = window.pageYOffset;
-    if (windowScroll >= this.elementPosition) {
-      this.sticky = true;
-    } else {
-      this.sticky = false;
-    }
   }
 
 

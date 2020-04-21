@@ -108,7 +108,6 @@ export class SignupComponent implements OnInit {
   }
 
   seaveNewUser() {
-    console.log('new user to db 1', this.newUser)
     this.main_service.createUser_DB(this.newUser)
       .subscribe(data => {
         this.rep = data;
@@ -121,7 +120,6 @@ export class SignupComponent implements OnInit {
             location.reload();
             break;
           default:
-            console.log(data);
         }
       })
   }

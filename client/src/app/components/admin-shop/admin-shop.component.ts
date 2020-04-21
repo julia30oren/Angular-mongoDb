@@ -39,7 +39,6 @@ export class AdminShopComponent implements OnInit {
         .subscribe(res => {
           this.x = res;
           if (this.x.responce) {
-            console.log('ok');
             this.data_service.get_productes_fromDB();
             this.data_service.all_productes_list_from_service.subscribe(data => {
               this.filtered_products = data;

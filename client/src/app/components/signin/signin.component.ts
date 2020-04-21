@@ -27,7 +27,6 @@ export class SigninComponent implements OnInit {
   data_check() {
     if (this.email) {
       if (this.password) {
-        console.log('check 1')
         this.login();
       } else { this.message = 'Password not filed'; }
     } else { this.message = 'Email not filed'; }
@@ -40,7 +39,6 @@ export class SigninComponent implements OnInit {
     }
     this.main_service.logIn(this.user)
       .subscribe(data => {
-        console.log(data);
         this.userIsSigned = data;
 
         switch (this.userIsSigned.status) {
@@ -60,7 +58,6 @@ export class SigninComponent implements OnInit {
             break;
           case 4:
             alert('Hello Admin');
-            console.log(this.userIsSigned);
             localStorage.setItem('2684_a_1621_', JSON.stringify(this.userIsSigned.token));
             this.data_service.signAdmin(true);
             break;

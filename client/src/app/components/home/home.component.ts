@@ -15,6 +15,7 @@ export class HomeComponent implements OnInit {
   public numberOfItems: number;
   public admin: boolean;
   private x: any;
+  public NofProd: number;
 
   constructor(
     private main_service: MainService,
@@ -32,7 +33,6 @@ export class HomeComponent implements OnInit {
             .subscribe(res => {
               this.x = res;
               if (this.x.responce) {
-                console.log('ok');
               } else {
                 this.data_service.save_UserData('', 0);
                 this.data_service.signAdmin(false);
@@ -48,7 +48,9 @@ export class HomeComponent implements OnInit {
               .subscribe(res => {
                 this.x = res;
                 if (this.x.response) {
-                  this.data_service.NofItems_from_service.subscribe(num => this.numberOfItems = num)
+                  this.data_service.NofItems_from_service.subscribe(num => this.numberOfItems = num);
+                  this.main_service.getProductes_fromDB()
+                    .subscribe(data => this.NofProd = data.length)
                 } else {
                   this.data_service.save_UserData('', 0);
                   alert('Access denied!');

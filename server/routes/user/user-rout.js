@@ -82,12 +82,10 @@ router.post('/user-login', async(req, res) => {
         console.log('3 login')
         try {
             const loginU = await UsersSchema.find({ "email": email });
-            // console.log('4 login', loginU[0].password);
             const User = loginU[0];
             if (User) {
                 const hush = User.password;
                 const cryptoPassChek = bcrypt.compareSync(password, hush);
-                // console.log(cryptoPassChek);
                 if (cryptoPassChek) {
                     const userToken = JWT.sign({ email }, process.env.SECRET, { expiresIn: '2h' });
                     res.json({ status: 3, token: userToken, name: User.name, _id: User._id, whish_list: User.whish_list });
@@ -102,11 +100,23 @@ router.post('/user-login', async(req, res) => {
 
 router.post('/password-change', async(req, res) => {
     const { email, oldPass, password } = req.body;
+
     try {
-        const passChange = await UsersSchema.update({ "email": email, "password": oldPass }, { $set: { "password": password } });
-        if (passChange.nModified === 1) { res.json(`Password was changed successfully.`) } else { res.json(`Password wasn't changed.`) }
+        const loginU = await UsersSchema.find({ "email": email });
+        console.log(loginU)
+        const User = loginU[0];
+        const hush = User.password;
+        const cryptoPassChek = bcrypt.compareSync(oldPass, hush);
+        if (cryptoPassChek) {
+            const salt = bcrypt.genSaltSync(10);
+            const passwordHash = bcrypt.hashSync(password, salt);
+            console.log(passwordHash)
+            const passChange = await UsersSchema.update({ "email": email }, { $set: { "password": passwordHash } });
+            console.log(passChange)
+            if (passChange.nModified === 1) { res.json({ status: 5 }) } else { res.json({ status: 6 }) }
+        } else res.json({ status: 7 })
     } catch (err) {
-        return res.status(500).send({ message: err.message })
+        return res.status(500).send({ message: err.message, status: 8 })
     }
 });
 
@@ -197,25 +207,6 @@ router.get('/delete-WL/:id', async(req, res) => {
         res.status(400).json({ message: ` We have an error with users data : ${err.message}` })
     }
 });
-
-// router.post('/delete-user', async(req, res) => {
-//     const { email } = req.body;
-//     try {
-//         const deleteUser = await UsersSchema.remove({ "email": email });
-//         res.json({ message: `user deleted` })
-//     } catch (err) {
-//         return res.status(500).send({ message: err.message })
-//     }
-// });
-
-// router.post('/delete-user/:id', getUsersById, async(req, res) => {
-//     try {
-//         await res.thisUser.remove();
-//         res.send({ message: `user deleted ${res.thisUser.name}` })
-//     } catch (error) {
-//         res.status(400).json({ message: ` We have an error with users data : ${err.message}` })
-//     }
-// });
 
 
 async function getUsersById(req, res, next) {
